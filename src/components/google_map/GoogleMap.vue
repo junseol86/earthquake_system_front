@@ -24,3 +24,7 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+  @import '../../assets/scss/google_map/google_map.scss';
+</style>

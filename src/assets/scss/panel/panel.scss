@@ -1,0 +1,14 @@
+#panel {
+  #panelTop {
+    width: 100%;
+    td {
+      background-color: #555;
+      color: white;
+      cursor: pointer;
+      &.on {
+        background-color: white;
+        color: #333;
+      }
+    }
+  }
+}

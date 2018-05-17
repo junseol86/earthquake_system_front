@@ -19,13 +19,13 @@
         <tr>
           <td id="panelCon"
           :style="{
-            width: `${sizes.panelW}px`
+            width: `${sizes.panelW}px`,
+            height: `${sizes.winH - sizes.topbarH}px`
           }">
+          <panel :sizes="sizes"/>
           </td>
           <td id="mapCon">
-            <google-map
-            :sizes="sizes">
-            </google-map>
+            <google-map :sizes="sizes"/>
           </td>
         </tr>
       </table>
@@ -35,19 +35,24 @@
 
 <script>
 
+import Panel from './panel/Panel'
 import GoogleMap from './google_map/GoogleMap'
 
 export default {
   name: 'console',
   components: {
-    GoogleMap
+    Panel, GoogleMap
   },
   data () {
     return {
+      account: {
+        token: ''
+      },
       sizes: {
         winW: 0,
         winH: 0,
         panelW: 480,
+        panelTopH: 36,
         topbarH: 56
       }
     }

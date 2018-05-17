@@ -4,7 +4,7 @@
     #consoleTable {
       position: absolute;
       #topbar {
-        background-color: #555;
+        background-color: #444;
         color: white;
         padding: 0 16px;
         text-align: left;
@@ -12,6 +12,7 @@
       }
       #panelCon {
         border-right: 1px solid #555;
+        vertical-align: top;
       }
       #mapCon {
         background-color: #eee;
