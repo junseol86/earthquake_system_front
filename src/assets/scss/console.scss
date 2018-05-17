@@ -1,0 +1,21 @@
+#console {
+  #wrapper {
+    position: relative;
+    #consoleTable {
+      position: absolute;
+      #topbar {
+        background-color: #555;
+        color: white;
+        padding: 0 16px;
+        text-align: left;
+        font-size: 1.2em;
+      }
+      #panelCon {
+        border-right: 1px solid #555;
+      }
+      #mapCon {
+        background-color: #eee;
+      }
+    }
+  }
+}
