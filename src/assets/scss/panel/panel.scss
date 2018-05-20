@@ -4,11 +4,15 @@
     td {
       background-color: #555;
       color: white;
+      border-bottom: 1px solid #555;
       cursor: pointer;
       &.on {
         background-color: white;
         color: #333;
       }
     }
+  }
+  #panelScroll {
+    overflow-y: scroll
   }
 }

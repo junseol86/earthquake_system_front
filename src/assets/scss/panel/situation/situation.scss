@@ -1,0 +1,65 @@
+#situation {
+  #wrapper {
+
+    .button {
+      display: inline-block;
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #ddd;;
+      padding: 4px 12px;
+      cursor: pointer;
+      &:hover {
+        background-color: #eee;
+      }
+    }
+
+    #beforeLogin {
+      padding: 12px;
+      div:first-child {
+        margin: 20px;
+      }
+      input {
+        vertical-align: top;
+        height: 26px;
+        line-height: 26px;
+        margin: 0;
+        outline: none;
+        border: 1px solid #ddd;;
+        padding: 4px;
+      }
+
+    }
+
+    #afterLogin {
+      #eqInput {
+        text-align: left;
+        position: relative;
+        border-bottom: 1px solid #ddd;
+        & > div {
+          position: absolute;
+          top: 13px;
+          left: 13px;
+          select {
+            height: 36px;
+            line-height: 36px;
+            padding: 0;
+          }
+          input {
+            vertical-align: top;
+            height: 26px;
+            line-height: 26px;
+            margin: 0;
+            outline: none;
+            border: 1px solid #ddd;;
+            padding: 4px;
+          }
+          #space {
+            height: 6px;
+          }
+
+        }
+      }
+    }
+
+  }
+}

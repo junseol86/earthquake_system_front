@@ -2,27 +2,27 @@
   <div id="console">
     <div id="wrapper">
       <table id="consoleTable"
-      :style="{
-        width: `${sizes.winW}px`,
-        height: `${sizes.winH}px`
-      }">
+        :style="{
+          width: `${sizes.winW}px`,
+          height: `${sizes.winH}px`
+        }">
         <tr>
           <td id="topbar"
-          colspan="2"
-          :style="{
-            height: `${sizes.topbarH}px`,
-            lineHeight: `${sizes.topbarH}px`
-          }">
+            colspan="2"
+            :style="{
+              height: `${sizes.topbarH}px`,
+              lineHeight: `${sizes.topbarH}px`
+            }">
             경주도로공사 지진관리 시스템
           </td>
         </tr>
         <tr>
           <td id="panelCon"
-          :style="{
-            width: `${sizes.panelW}px`,
-            height: `${sizes.winH - sizes.topbarH}px`
-          }">
-          <panel :sizes="sizes"/>
+            :style="{
+              width: `${sizes.panelW}px`,
+              height: `${sizes.winH - sizes.topbarH}px`
+            }">
+          <panel :sizes="sizes" :status="status"/>
           </td>
           <td id="mapCon">
             <google-map :sizes="sizes"/>
@@ -45,8 +45,8 @@ export default {
   },
   data () {
     return {
-      account: {
-        token: ''
+      status: {
+        token: undefined
       },
       sizes: {
         winW: 0,
@@ -68,6 +68,10 @@ export default {
     let setSizes = this.setSizes
     window.addEventListener('resize', function () {
       setSizes()
+    })
+
+    this.$bus.$on('setToken', (token) => {
+      this.status.token = token
     })
   }
 }
