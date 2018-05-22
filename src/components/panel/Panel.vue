@@ -31,6 +31,7 @@
           }">
 
           <situation v-if="tab.current == 'situation'" :sizes="sizes" :status="status"/>
+          <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"/>
 
         </div>
       </div>
@@ -41,12 +42,13 @@
 <script>
 
 import Situation from './situation/Situation'
+import Team from './team/Team'
 
 export default {
   name: 'panel',
   props: ['sizes', 'status'],
   components: {
-    Situation
+    Situation, Team
   },
   data () {
     return {
@@ -64,7 +66,6 @@ export default {
   methods: {
     setTab (which) {
       this.tab.current = which
-      console.log(this.tab.current)
     }
   },
   mounted () {

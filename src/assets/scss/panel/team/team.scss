@@ -1,0 +1,26 @@
+#team {
+  #wrapper {
+    .team {
+      border-bottom: 1px solid #ddd;
+      &:nth-child(even) {
+        background-color: #f8f8f8;
+      }
+      .title {
+        vertical-align: middle;
+        padding: 0 4px 0 16px;
+        font-size: 1.2em;
+        font-weight: bold;
+      }
+
+      .members {
+        padding: 8px;
+        text-align: left;
+        select {
+          height: 28px;
+          line-height: 28px;
+          margin: 4px;
+        }
+      }
+    }
+  }
+}
