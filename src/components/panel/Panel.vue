@@ -32,6 +32,7 @@
 
           <situation v-if="tab.current == 'situation'" :sizes="sizes" :status="status"/>
           <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"/>
+          <chatting v-if="tab.current == 'chatting'" :sizes="sizes" :status="status"/>
 
         </div>
       </div>
@@ -43,12 +44,13 @@
 
 import Situation from './situation/Situation'
 import Team from './team/Team'
+import Chatting from './chatting/Chatting'
 
 export default {
   name: 'panel',
   props: ['sizes', 'status'],
   components: {
-    Situation, Team
+    Situation, Team, Chatting
   },
   data () {
     return {

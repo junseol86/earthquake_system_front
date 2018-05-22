@@ -1,0 +1,35 @@
+#chatting {
+  #wrapper {
+    #selectTo {
+      border-bottom: 1px solid #444;
+      td {
+        width: 33%;
+        background-color: #aaa;
+        font-size: 0.9em;
+        cursor: pointer;
+        :hover {
+          background-color: #888;
+          select {
+            background-color: white;
+          }
+        }
+        &.on {
+          background-color: white;
+          :hover {
+            background-color: white;
+          }
+        }
+        div {
+          padding: 0 8px;
+          select {
+            vertical-align: middle;
+            height: 28px;
+            line-height: 28px;
+            width: 100%;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
