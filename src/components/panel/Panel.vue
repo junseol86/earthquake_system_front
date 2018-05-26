@@ -19,7 +19,7 @@
                 height: `${sizes.panelTopH}px`,
                 lineHeight: `${sizes.panelTopH}px`
               }">
-            {{tabItem[1]}}
+            <i :class="`fa ${tabItem[2]}`"></i> {{tabItem[1]}}
             </td>
           </tr>
         </table>
@@ -33,6 +33,8 @@
           <situation v-if="tab.current == 'situation'" :sizes="sizes" :status="status"/>
           <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"/>
           <chatting v-if="tab.current == 'chatting'" :sizes="sizes" :status="status"/>
+          <structure v-if="tab.current == 'structure'" :sizes="sizes" :status="status"
+            :structures="structures"/>
 
         </div>
       </div>
@@ -45,21 +47,22 @@
 import Situation from './situation/Situation'
 import Team from './team/Team'
 import Chatting from './chatting/Chatting'
+import Structure from './structure/Structure'
 
 export default {
   name: 'panel',
-  props: ['sizes', 'status'],
+  props: ['sizes', 'status', 'structures'],
   components: {
-    Situation, Team, Chatting
+    Situation, Team, Chatting, Structure
   },
   data () {
     return {
       tab: {
         list: [
-          ['situation', '상황'],
-          ['team', '조편성'],
-          ['chatting', '통신'],
-          ['structure', '구조물']
+          ['situation', '상황', 'fa-globe'],
+          ['team', '조편성', 'fa-user-friends'],
+          ['chatting', '통신', 'fa-comments'],
+          ['structure', '구조물', 'fa-building']
         ],
         current: 'situation'
       }

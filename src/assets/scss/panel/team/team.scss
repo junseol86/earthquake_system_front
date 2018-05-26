@@ -1,26 +1,42 @@
 #team {
   #wrapper {
-    .team {
-      border-bottom: 1px solid #ddd;
-      &:nth-child(even) {
-        background-color: #f8f8f8;
+    #noticeBtn {
+      border-bottom: 1px solid #666;
+      font-size: 0.9em;
+      cursor: pointer;
+      &:hover {
+        background-color: #fafafa;
       }
-      .title {
-        vertical-align: middle;
-        padding: 0 4px 0 16px;
-        font-size: 1.2em;
-        font-weight: bold;
+    }
+    #teams {
+      overflow-y: scroll;
+      table {
+        width: 100%;
+        .team {
+          border-bottom: 1px solid #ddd;
+          &:nth-child(even) {
+            background-color: #f8f8f8;
+          }
+          .title {
+            vertical-align: middle;
+            padding: 0 4px 0 16px;
+            font-size: 0.9em;
+            width: 44px;
+          }
+
+          .members {
+            padding: 8px;
+            text-align: left;
+            select {
+              height: 28px;
+              line-height: 28px;
+              margin: 4px;
+            }
+          }
+        }
+
       }
 
-      .members {
-        padding: 8px;
-        text-align: left;
-        select {
-          height: 28px;
-          line-height: 28px;
-          margin: 4px;
-        }
-      }
     }
   }
 }

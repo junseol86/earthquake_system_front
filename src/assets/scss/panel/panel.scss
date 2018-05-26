@@ -9,10 +9,11 @@
       &.on {
         background-color: white;
         color: #333;
+        border-bottom: white;
       }
     }
   }
   #panelScroll {
-    overflow-y: scroll
+    overflow-y: hiddeN
   }
 }

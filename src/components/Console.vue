@@ -22,10 +22,10 @@
               width: `${sizes.panelW}px`,
               height: `${sizes.winH - sizes.topbarH}px`
             }">
-          <panel :sizes="sizes" :status="status"/>
+          <panel :sizes="sizes" :status="status" :structures="structures"/>
           </td>
           <td id="mapCon">
-            <google-map :sizes="sizes"/>
+            <google-map :sizes="sizes" :structures="structures"/>
           </td>
         </tr>
       </table>
@@ -38,6 +38,8 @@
 import Panel from './panel/Panel'
 import GoogleMap from './google_map/GoogleMap'
 
+import mock from '../../mock'
+
 export default {
   name: 'console',
   components: {
@@ -48,9 +50,11 @@ export default {
       status: {
         token: undefined
       },
+      structures: [],
       sizes: {
         winW: 0,
         winH: 0,
+        scrollBarW: 0,
         panelW: 480,
         panelTopH: 36,
         topbarH: 56
@@ -61,6 +65,9 @@ export default {
     setSizes () {
       this.sizes.winW = window.innerWidth
       this.sizes.winH = window.innerHeight
+      if (window.navigator.platform.indexOf('Mac') < 0) {
+        this.sizes.scrollBarW = 17
+      }
     }
   },
   mounted () {
@@ -73,6 +80,8 @@ export default {
     this.$bus.$on('setToken', (token) => {
       this.status.token = token
     })
+
+    this.structures = mock.structures()
   }
 }
 </script>

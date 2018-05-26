@@ -1,0 +1,123 @@
+#structure {
+  #wrapper {
+
+    #strInput {
+      position: relative;
+      left: 0;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      & > div {
+        position: absolute;
+        top: 13px;
+        left: 13px;
+        select {
+          height: 36px;
+          line-height: 36px;
+          padding: 0;
+        }
+        input {
+          vertical-align: top;
+          height: 26px;
+          line-height: 26px;
+          margin: 0;
+          outline: none;
+          border: 1px solid #ddd;;
+          padding: 4px;
+          &.long {
+            width: 200px;
+          }
+        }
+        #space {
+          height: 6px;
+        }
+
+        .button {
+          display: inline-block;
+          font-size: 0.9em;
+          height: 26px;
+          line-height: 26px;
+          border: 1px solid #ddd;;
+          padding: 4px 12px;
+          cursor: pointer;
+          &:hover {
+            background-color: #eee;
+          }
+        }
+
+      }
+    }
+
+    #structures {
+      overflow-y: scroll;
+      font-size: 0.9em;
+      * {
+        color: white;
+      }
+      .structure {
+        text-align: left;
+        border-bottom: 1px solid #555;
+        cursor: pointer;
+        background-color: #444;
+        &:hover {
+          background-color: #555;
+          .buttons {
+            display: block;
+          }
+        }
+        .buttons {
+          display: none;
+          text-align: right;
+          font-size: 0.9em;
+          div {
+            display: inline-block;
+            background-color: #333;
+            border: 1px solid #222;
+            margin-left: 1px;
+            height: 28px;
+            line-height: 28px;
+            padding: 0 8px;
+            cursor: pointer;
+            &:hover {
+              background-color: #222;
+            }
+          }
+        }
+
+        & > div {
+          padding: 8px 12px;
+          select {
+            height: 30px;
+            line-height: 30px;
+            padding: 0;
+            border: 1px solid #333;
+            background-color: #444;
+            font-size: 0.9em;
+          }
+          input {
+            vertical-align: top;
+            height: 20px;
+            line-height: 20px;
+            margin: 0;
+            outline: none;
+            border: 1px solid #333;
+            background-color: #444;
+            padding: 4px;
+            font-size: 0.9em;
+            &.long {
+              width: 200px;
+            }
+          }
+          #space {
+            height: 6px;
+          }
+
+          table {
+            width: 100%;
+          }
+        }
+
+      }
+    }
+
+  }
+}

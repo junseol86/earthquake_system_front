@@ -1,18 +1,33 @@
 <template>
   <div id="team">
-    <div id="wrapper">
-      <table>
-        <tr class="team" v-for="(team, t_idx) in teams" :key="t_idx">
-          <td class="title">{{team.no}}</td>
-          <td class="members">
-            <select v-for="(member, m_idx) in team.members" :key="m_idx">
-              <option>{{member.mbr_name}}</option>
-              <option>위치확인</option>
-              <option v-for="(team, tt_idx) in teams" :key="tt_idx">→ {{team.no}}조</option>
-            </select>
-          </td>
-        </tr>
-      </table>
+    <div id="wrapper"
+      :style="{
+        height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - 1}px`
+      }">
+      <div id="noticeBtn"
+        :style="{
+          height: `${tmSize.noticeBtnH}px`,
+          lineHeight: `${tmSize.noticeBtnH}px`
+        }">
+        <i class="fas fa-bell"></i> 조편성 알림 보내기
+      </div>
+      <div id="teams"
+        :style="{
+          height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - tmSize.noticeBtnH - 2}px`
+        }">
+        <table>
+          <tr class="team" v-for="(team, t_idx) in teams" :key="t_idx">
+            <td class="title">{{team.no == 0 ? '미편성' : team.no + '조'}}</td>
+            <td class="members">
+              <select v-for="(member, m_idx) in team.members" :key="m_idx">
+                <option>{{member.mbr_name}}</option>
+                <option>위치확인</option>
+                <option v-for="(team, tt_idx) in teams" :key="tt_idx">→ {{team.no}}조</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +41,10 @@ export default {
   props: ['sizes', 'status'],
   data () {
     return {
-      teams: []
+      teams: [],
+      tmSize: {
+        noticeBtnH: 44
+      }
     }
   },
   methods: {

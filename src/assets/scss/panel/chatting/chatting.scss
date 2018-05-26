@@ -1,35 +1,100 @@
 #chatting {
   #wrapper {
-    #selectTo {
-      border-bottom: 1px solid #444;
-      td {
-        width: 33%;
-        background-color: #aaa;
-        font-size: 0.9em;
-        cursor: pointer;
-        :hover {
-          background-color: #888;
-          select {
-            background-color: white;
+    position: relative;
+    #send {
+      left: 0;
+
+      #selectTo {
+        width: 100%;
+        td {
+          width: 33%;
+          background-color: #666;
+          color: white;
+          font-size: 0.9em;
+          cursor: pointer;
+          :hover {
+            background-color: #888;
           }
+          select {
+            background-color: #666;
+            color: white;
+          }
+          &.on {
+            background-color: white;
+            color: #555;
+            :hover {
+              background-color: white;
+            }
+            select {
+              background-color: white;
+              color: #555;
+            }
+          }
+          div {
+            padding: 0 8px;
+            select {
+              vertical-align: middle;
+              height: 28px;
+              line-height: 28px;
+              width: 100%;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      #message {
+        border-bottom: 1px solid #527CE9;
+        background-color: white;
+        textarea {
+          border: 0;
+          outline: none;
+          padding: 0;
+          font-size: 1em;
+        }
+      }
+
+    }
+
+    #chats {
+      overflow-y: scroll;
+      font-size: 0.9em;
+      table {
+        background-color: #fafafa;
+        &:nth-child(even) {
+          background-color: #eeeeee;
         }
         &.on {
-          background-color: white;
-          :hover {
-            background-color: white;
+            color: white;
+            background-color: #5289E9;
+            &:nth-child(even) {
+              background-color: #527CE9;
+            }
+            td.fromTo i {
+              color: white;
+            }
           }
-        }
-        div {
-          padding: 0 8px;
-          select {
-            vertical-align: middle;
-            height: 28px;
-            line-height: 28px;
-            width: 100%;
-            cursor: pointer;
+        width: 100%;
+        td {
+          padding: 12px 8px;
+          text-align: left;
+          &.fromTo {
+            font-weight: bold;
+            i {
+            color: #527CE9;
+            }
+          }
+          &.datetime {
+            text-align: right;
+            opacity: 0.5;
+          }
+          &.content {
+            padding: 4px 8px 16px 28px;
+            line-height: 1.2em;
           }
         }
       }
     }
+
   }
 }
