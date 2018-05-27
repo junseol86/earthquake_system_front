@@ -82,6 +82,7 @@ export default {
     })
 
     this.structures = mock.structures()
+    window.setStructures(this.structures)
   }
 }
 </script>

@@ -6,26 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>eq-sys-front</title>
-    <script>
-      var readyToInit = false;
-      var initInterval;
-      function getReadyToInit() {
-        readyToInit = true;
-      }
-      function initMap() {
-        // Create a map object and specify the DOM element for display.
-        if (readyToInit) {
-          var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: 35.780724, lng: 129.4432829},
-            zoom: 12
-          });
-          clearInterval(initInterval);
-        }
-      }
-      function tryInitMap () {
-        initInterval = setInterval(initMap, 100);
-      }
-    </script>
+    <script src="map.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvuDyeH_4HHPEE6Bfds-p49MmKjMFTy1A&callback=getReadyToInit"
     async defer></script>
     <link href="/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet">
