@@ -26,7 +26,8 @@
           height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - strSize.strInputH}px`
         }">
         <div>
-          <div class="structure" v-for="(structure, idx) in structures" :key="idx">
+          <div class="structure" v-for="(structure, idx) in structures" :key="idx"
+            @click="seeStructure(structure)">
             <div>
               <div>
 
@@ -57,8 +58,8 @@
               </div>
               <div id="space"/>
               <div>
-                <input :value="structure.str_latitude"/>
-                <input :value="structure.str_longitude"/>
+                <input :value="structure.latitude"/>
+                <input :value="structure.longitude"/>
               </div>
             </div>
             <div v-if="structure.selected">
@@ -90,6 +91,9 @@ export default {
     }
   },
   methods: {
+    seeStructure (structure) {
+      window.moveToAndZoom(structure, 16)
+    }
   },
   mounted () {
   }

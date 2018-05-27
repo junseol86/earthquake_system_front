@@ -149,85 +149,85 @@ export default new function() {
         selected: false,
         str_type: '다리',
         str_name: '다리1',
-        str_latitude: 35.750725,
-        str_longitude: 129.3432829
+        latitude: 35.750725,
+        longitude: 129.3432829
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리2',
-        str_latitude: 35.880724,
-        str_longitude: 129.4432828
+        latitude: 35.880724,
+        longitude: 129.4432828
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리3',
-        str_latitude: 35.720723,
-        str_longitude: 129.4563829
+        latitude: 35.720723,
+        longitude: 129.4563829
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리4',
-        str_latitude: 35.786724,
-        str_longitude: 129.4732827
+        latitude: 35.786724,
+        longitude: 129.4732827
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리5',
-        str_latitude: 35.750726,
-        str_longitude: 129.4532821
+        latitude: 35.750726,
+        longitude: 129.4532821
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리6',
-        str_latitude: 35.7957245,
-        str_longitude: 129.44328294
+        latitude: 35.7957245,
+        longitude: 129.44328294
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리7',
-        str_latitude: 35.8251255,
-        str_longitude: 129.4632824
+        latitude: 35.8251255,
+        longitude: 129.4632824
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리8',
-        str_latitude: 35.850724,
-        str_longitude: 129.3932830
+        latitude: 35.850724,
+        longitude: 129.3932830
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리9',
-        str_latitude: 35.740726,
-        str_longitude: 129.3632821
+        latitude: 35.740726,
+        longitude: 129.3632821
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리10',
-        str_latitude: 35.8007245,
-        str_longitude: 129.49328294
+        latitude: 35.8007245,
+        longitude: 129.49328294
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리11',
-        str_latitude: 35.7807255,
-        str_longitude: 129.4432824
+        latitude: 35.7807255,
+        longitude: 129.4432824
       },
       {
         selected: false,
         str_type: '다리',
         str_name: '다리12',
-        str_latitude: 35.790724,
-        str_longitude: 129.3232830
+        latitude: 35.790724,
+        longitude: 129.3232830
       }
     ]
   }
@@ -235,19 +235,27 @@ export default new function() {
     return [
       {
         eq_type: '내륙',
-        eq_datetime: '18-05-17 23:34:28'
+        eq_datetime: '18-05-17 23:34:28',
+        latitude: 35.780724,
+        longitude: 129.4832829
       },
       {
         eq_type: '해안',
-        eq_datetime: '18-04-01 07:42:10'
+        eq_datetime: '18-04-01 07:42:10',
+        latitude: 35.780724,
+        longitude: 129.3432829
       },
       {
         eq_type: '내륙',
-        eq_datetime: '18-03-15 17:30:59'
+        eq_datetime: '18-03-15 17:30:59',
+        latitude: 35.720724,
+        longitude: 129.5432829
       },
       {
         eq_type: '내륙',
-        eq_datetime: '18-03-12 04:28:32'
+        eq_datetime: '18-03-12 04:28:32',
+        latitude: 35.640724,
+        longitude: 129.4932829
       }
     ]
   }

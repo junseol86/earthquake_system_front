@@ -30,7 +30,11 @@
               height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - 1}px`
           }">
 
-          <situation v-if="tab.current == 'situation'" :sizes="sizes" :status="status"/>
+          <situation v-if="tab.current == 'situation'" 
+            :sizes="sizes"
+            :status="status"
+            :earthquakes="earthquakes"
+            />
           <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"/>
           <chatting v-if="tab.current == 'chatting'" :sizes="sizes" :status="status"/>
           <structure v-if="tab.current == 'structure'" :sizes="sizes" :status="status"
@@ -51,7 +55,7 @@ import Structure from './structure/Structure'
 
 export default {
   name: 'panel',
-  props: ['sizes', 'status', 'structures'],
+  props: ['sizes', 'status', 'earthquakes', 'structures'],
   components: {
     Situation, Team, Chatting, Structure
   },

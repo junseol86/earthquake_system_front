@@ -22,7 +22,12 @@
               width: `${sizes.panelW}px`,
               height: `${sizes.winH - sizes.topbarH}px`
             }">
-          <panel :sizes="sizes" :status="status" :structures="structures"/>
+          <panel 
+            :sizes="sizes" 
+            :status="status" 
+            :structures="structures"
+            :earthquakes="earthquakes"
+            />
           </td>
           <td id="mapCon">
             <google-map :sizes="sizes" :structures="structures"/>
@@ -51,6 +56,7 @@ export default {
         token: undefined
       },
       structures: [],
+      earthquakes: [],
       sizes: {
         winW: 0,
         winH: 0,
@@ -82,6 +88,7 @@ export default {
     })
 
     this.structures = mock.structures()
+    this.earthquakes = mock.earthquakes()
     window.setStructures(this.structures)
   }
 }

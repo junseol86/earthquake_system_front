@@ -46,7 +46,8 @@
             height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - sitSize.eqInputH - 1}px`
           }">
           <div>
-            <table v-for="(earthquake, idx) in earthquakes" :key="idx">
+            <table v-for="(earthquake, idx) in earthquakes" :key="idx"
+              @click="showEarthquake(earthquake, 12)">
               <tr>
                 <td>
                   {{earthquake.eq_type}}
@@ -70,26 +71,26 @@
 
 <script>
 
-import mock from '../../../../mock'
-
 export default {
   name: 'situation',
-  props: ['sizes', 'status'],
+  props: ['sizes', 'status', 'earthquakes'],
   data () {
     return {
       sitSize: {
         eqInputH: 64
       },
-      earthquakes: []
     }
   },
   methods: {
     login () {
       this.$bus.$emit('setToken', '1')
+    },
+    showEarthquake (earthquake, zoom) {
+      window.moveToAndZoom(earthquake, zoom)
+      window.drawEqCircles(earthquake)
     }
   },
   mounted () {
-    this.earthquakes = mock.earthquakes()
   }
 }
 </script>
