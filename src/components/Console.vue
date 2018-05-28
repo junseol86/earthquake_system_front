@@ -74,6 +74,13 @@ export default {
       if (window.navigator.platform.indexOf('Mac') < 0) {
         this.sizes.scrollBarW = 17
       }
+    },
+    getStructures () {
+      this.$axios.get(this.$serverApi + 'structure/getList')
+      .then((response) => {
+        this.structures = response.data
+        window.setStructures(this.structures)
+      })
     }
   },
   mounted () {
@@ -87,9 +94,8 @@ export default {
       this.status.token = token
     })
 
-    this.structures = mock.structures()
     this.earthquakes = mock.earthquakes()
-    window.setStructures(this.structures)
+    this.getStructures()
   }
 }
 </script>

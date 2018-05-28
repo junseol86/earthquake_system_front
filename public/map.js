@@ -13,8 +13,8 @@ function initMap() {
   // Create a map object and specify the DOM element for display.
   if (readyToInit) {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 35.780724, lng: 129.4432829},
-      zoom: 12
+      center: {lat: 35.74095, lng: 129.4432829},
+      zoom: 11
     });
     clearInterval(initInterval);
   }
@@ -28,8 +28,8 @@ function tryInitMap () {
 function moveToAndZoom (position, zoom) {
   if (position != null) {
     map.panTo({
-      lat: position.latitude,
-      lng: position.longitude
+      lat: Number(position.latitude),
+      lng: Number(position.longitude)
     })
   }
   if (zoom != null && zoom != map.getZoom()) {
@@ -75,8 +75,8 @@ function showStructures() {
       strMarkers.push(
         new google.maps.Marker({
           position: {
-            lat: structure.latitude,
-            lng: structure.longitude
+            lat: Number(structure.latitude),
+            lng: Number(structure.longitude)
           },
           map: map,
           title: structure.str_name
