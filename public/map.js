@@ -16,6 +16,11 @@ function initMap() {
       center: {lat: 35.74095, lng: 129.4432829},
       zoom: 11
     });
+
+    map.addListener('click', function (clicked) {
+      console.log(clicked.latLng.lng() + ' ' + clicked.latLng.lat());
+    });
+
     clearInterval(initInterval);
   }
 }
