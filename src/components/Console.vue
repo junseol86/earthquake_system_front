@@ -27,6 +27,7 @@
             :status="status" 
             :structures="structures"
             :earthquakes="earthquakes"
+            :teams="teams"
             />
           </td>
           <td id="mapCon">
@@ -57,6 +58,7 @@ export default {
       },
       structures: [],
       earthquakes: [],
+      teams: [],
       sizes: {
         winW: 0,
         winH: 0,
@@ -81,6 +83,34 @@ export default {
         this.structures = response.data
         window.setStructures(this.structures)
       })
+    },
+    getMembers () {
+      this.$axios.get(this.$serverApi + 'member/getList')
+      .then((response) => {
+        var members = response.data
+        var teams = []
+        for (var i = 0; i <= 10; i++) {
+          teams.push({
+            no: i,
+            members: []
+          })
+        }
+        members.map((member) => {
+          teams[member.mbr_team].members.push(member)
+        })
+        this.teams = teams
+        this.showMembersOnMap(members)
+      })
+    },
+    showMembersOnMap (members) {
+      var _this = this
+      var reported = []
+      members.map(function(member) {
+        if (_this.$util.isInDay(member.mbr_pos_last_report)) {
+          reported.push(member)
+        }
+      })
+      window.setMembers(reported)
     }
   },
   mounted () {
@@ -96,6 +126,7 @@ export default {
 
     this.earthquakes = mock.earthquakes()
     this.getStructures()
+    this.getMembers()
   }
 }
 </script>

@@ -5,6 +5,8 @@ var eqCircles = [];
 var radPerTeam = 1600;
 var structures = [];
 var strMarkers = [];
+var members = [];
+var mbrMarkers = [];
 
 function getReadyToInit() {
   readyToInit = true;
@@ -84,6 +86,7 @@ function showStructures() {
             lng: Number(structure.longitude)
           },
           map: map,
+          label: 'S',
           title: structure.str_name
         })
       )
@@ -98,4 +101,38 @@ function showStructures() {
 var showStructuresInterval;
 function tryShowStructues() {
   showStructuresInterval = setInterval(showStructures, 100);
+}
+
+function setMembers(_members) {
+ members = _members;
+ tryShowMembers();
+}
+
+function showMembers() {
+  if (readyToInit) {
+    mbrMarkers.forEach(function(mbrMarker) {
+      mbrMarker.setMap(null);
+    });
+    mbrMarkers = [];
+
+    members.forEach(function(member) {
+      mbrMarkers.push(
+        new google.maps.Marker({
+          position: {
+            lat: Number(member.latitude),
+            lng: Number(member.longitude)
+          },
+          map: map,
+          label: 'M',
+          title: member.mbr_name
+        })
+      )
+    })
+    clearInterval(showMembersInterval)
+  }
+}
+
+var showMembersInterval;
+function tryShowMembers() {
+  showMembersInterval = setInterval(showMembers, 100);
 }

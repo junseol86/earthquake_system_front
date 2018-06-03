@@ -15,13 +15,18 @@
         :style="{
           height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - tmSize.noticeBtnH - 2}px`
         }">
-        <table>
+        <table v-if="teams != null">
           <tr class="team" v-for="(team, t_idx) in teams" :key="t_idx">
             <td class="title">{{team.no == 0 ? '미편성' : team.no + '조'}}</td>
             <td class="members">
-              <select v-for="(member, m_idx) in team.members" :key="m_idx">
-                <option>{{member.mbr_name}}</option>
-                <option>위치확인</option>
+              <select v-for="(member, m_idx) in team.members" :key="m_idx" 
+                :class="isPosReported(member.mbr_pos_last_report) ? 'hasPos' : ''"
+                @click="seeMember(member)">
+                <option>
+                  {{isPosReported(member.mbr_pos_last_report) ? '◉ ' : ''}}
+                  {{member.mbr_name}}
+                  {{arriveInIfInDay(member.mbr_arr_last_report, member.mbr_arrive_in)}}
+                </option>
                 <option v-for="(team, tt_idx) in teams" :key="tt_idx">→ {{team.no}}조</option>
               </select>
             </td>
@@ -34,14 +39,11 @@
 
 <script>
 
-import mock from '../../../../mock'
-
 export default {
   name: 'team',
-  props: ['sizes', 'status'],
+  props: ['sizes', 'status', 'teams'],
   data () {
     return {
-      teams: [],
       tmSize: {
         noticeBtnH: 44
       }
@@ -57,26 +59,24 @@ export default {
       })
       return result
     },
-    intoTeam (members) {
-      var _this = this
-      var teams = []
-      members.map((member) => {
-        var teamIdx = _this.getTeamIdxByNo(teams, member.mbr_team)
-        if (teamIdx === -1) {
-          var team = {
-            no: member.mbr_team,
-            members: [member]
-          }
-          teams.push(team)
-        } else {
-          teams[teamIdx].members.push(member)
-        }
-      })
-      this.teams = teams      
+    // 하루 이내 보고되었을 시 도착 예상 시간
+    arriveInIfInDay (arr_last_report, arrive_in) {
+      if (this.$util.isInDay(arr_last_report)) {
+        return this.$util.willComeUntil(arrive_in)
+      } else {
+        return ''
+      }
+    },
+    isPosReported (pos_last_report) {
+      return this.$util.isInDay(pos_last_report)
+    },
+    seeMember (member) {
+      if (this.$util.isInDay(member.mbr_pos_last_report)) {
+        window.moveToAndZoom(member, 16)
+      }
     }
   },
   mounted () {
-    this.intoTeam(mock.members())
   }
 }
 </script>

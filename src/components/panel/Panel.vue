@@ -35,7 +35,8 @@
             :status="status"
             :earthquakes="earthquakes"
             />
-          <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"/>
+          <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"
+            :teams="teams"/>
           <chatting v-if="tab.current == 'chatting'" :sizes="sizes" :status="status"/>
           <structure v-if="tab.current == 'structure'" :sizes="sizes" :status="status"
             :structures="structures"/>
@@ -55,7 +56,7 @@ import Structure from './structure/Structure'
 
 export default {
   name: 'panel',
-  props: ['sizes', 'status', 'earthquakes', 'structures'],
+  props: ['sizes', 'status', 'earthquakes', 'structures', 'teams'],
   components: {
     Situation, Team, Chatting, Structure
   },

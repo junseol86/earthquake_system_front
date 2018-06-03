@@ -7,6 +7,20 @@
         height: `${sizes.winH - sizes.topbarH}px`
       }">
       </div>
+      <div class="line"
+        :style="{
+          width: `${sizes.winW - sizes.panelW - 3}px`,
+          height: '1px',
+          top: `${(sizes.winH - sizes.topbarH)/2 - 2}px`,
+          left: '1px'
+        }"/>
+      <div class="line"
+        :style="{
+          width: '1px',
+          height: `${sizes.winH - sizes.topbarH - 2}px`,
+          top: '1px',
+          left: `${(sizes.winW - sizes.panelW) / 2 - 2}px`
+        }"/>
     </div>
   </div>
 </template>
