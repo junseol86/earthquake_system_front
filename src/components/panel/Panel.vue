@@ -6,7 +6,7 @@
           width: `${sizes.panelW}px`,
           height: `${sizes.winH - sizes.topbarH}px`
         }">
-        <table id="panelTop"
+        <table v-if="status.jwtToken != null" id="panelTop"
           :style="{
             height: `${sizes.panelTopH}px`
           }">
@@ -75,6 +75,9 @@ export default {
   },
   methods: {
     setTab (which) {
+      if (this.status.jwtToken == undefined) {
+        return
+      }
       this.tab.current = which
     }
   },

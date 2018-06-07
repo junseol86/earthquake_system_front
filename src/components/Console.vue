@@ -54,7 +54,7 @@ export default {
   data () {
     return {
       status: {
-        token: undefined
+        jwtToken: undefined
       },
       structures: [],
       earthquakes: [],
@@ -111,6 +111,22 @@ export default {
         }
       })
       window.setMembers(reported)
+    },
+    tokenLogin (jwtToken) {
+      var _this = this
+      _this.$axios.post(_this.$serverApi + 'member/tokenLogin',
+      _this.$qs.stringify({ jwtToken: jwtToken }),
+      {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+      })
+      .then((response) => {
+        _this.status.jwtToken = response.data
+      }).catch((err) => {
+        console.log(err)
+        _this.status.jwtToken = undefined
+      })
     }
   },
   mounted () {
@@ -120,13 +136,19 @@ export default {
       setSizes()
     })
 
-    this.$bus.$on('setToken', (token) => {
-      this.status.token = token
+    this.$bus.$on('setJwtToken', (jwtToken) => {
+      this.status.jwtToken = jwtToken
+      this.$cookie.set('jwtToken', jwtToken, { expires: 1 })
     })
 
     this.earthquakes = mock.earthquakes()
     this.getStructures()
     this.getMembers()
+
+    var jwtToken = this.$cookie.get('jwtToken')
+    if (jwtToken != undefined) {
+      this.tokenLogin(jwtToken)
+    }
   }
 }
 </script>

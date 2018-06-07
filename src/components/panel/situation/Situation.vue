@@ -2,7 +2,7 @@
   <div id="situation">
     <div id="wrapper">
 
-      <div v-if="status.token == undefined" id="beforeLogin"
+      <div v-if="status.jwtToken == undefined" id="beforeLogin"
         :style="{
           width: `${sizes.panelW - sizes.scrollBarW}px`
         }">
@@ -10,8 +10,12 @@
           <div>
             <i class="fas fa-exclamation-triangle"></i> 로그인 후 사용 가능합니다.
           </div>
-          <input type="text" placeholder="아이디"/>
-          <input type="password" placeholder="비밀번호"/>
+          <input type="text" 
+            placeholder="아이디(임시: test)"
+            v-model="loginInput.mbr_id"/>
+          <input type="password" 
+            placeholder="비밀번호(임시: test)"
+            v-model="loginInput.password"/>
           <div class="button" @click="login()">
             <i class="fa fa-sign-in-alt"></i> 로그인
           </div>
@@ -79,11 +83,25 @@ export default {
       sitSize: {
         eqInputH: 64
       },
+      loginInput: {
+        mbr_id: '',
+        password: ''
+      }
     }
   },
   methods: {
     login () {
-      this.$bus.$emit('setToken', '1')
+      var _this = this
+      this.$axios.post(this.$serverApi + 'member/passwordLogin', this.$qs.stringify(this.loginInput), {
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+      }).then((response) => {
+        _this.$bus.$emit('setJwtToken', response.data)
+      }).catch((err) => {
+        console.log(err)
+        window.alert('아이디와 비밀번호를 다시 확인하세요.')
+      })
     },
     showEarthquake (earthquake, zoom) {
       window.moveToAndZoom(earthquake, zoom)

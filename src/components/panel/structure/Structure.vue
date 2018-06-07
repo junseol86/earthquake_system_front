@@ -8,14 +8,12 @@
           height: `${strSize.strInputH}px`
         }">
         <div>
-          <select>
-            <option>다리</option>
-            <option>기타</option>
-          </select>
-          <input class="long" type="text" placeholder="이름"/>
+          <input class="short" type="text" placeholder="지사"/>
+          <input class="short" type="text" placeholder="노선"/>
+          <input type="text" placeholder="구조물명"/>
           <div id="space"/>
-          <input type="text" placeholder="위도"/>
-          <input type="text" placeholder="경도"/>
+          <input class="long" type="text" placeholder="위도"/>
+          <input class="long" type="text" placeholder="경도"/>
           <div class="button">
             <i class="fas fa-upload"></i> 입력
           </div>
@@ -35,11 +33,15 @@
                   <tr>
                     <td>
 
-                      <select>
-                        <option>다리</option>
-                        <option>기타</option>
-                      </select>
-                      <input :value="structure.str_name"/>
+                      <input class="short" 
+                        :value="structure.str_branch"
+                        placeholder="지사"/>
+                      <input class="short" 
+                        :value="structure.str_line"
+                        placeholder="노선"/>
+                      <input 
+                        :value="structure.str_name"
+                        placeholder="구조물명"/>
 
                     </td>
                     <td class="buttons">
@@ -58,8 +60,8 @@
               </div>
               <div id="space"/>
               <div>
-                <input :value="structure.latitude"/>
-                <input :value="structure.longitude"/>
+                <input class="long" :value="structure.latitude"/>
+                <input class="long" :value="structure.longitude"/>
               </div>
             </div>
             <div v-if="structure.selected">
