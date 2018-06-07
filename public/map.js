@@ -79,23 +79,31 @@ function showStructures() {
     strMarkers = [];
 
     structures.forEach(function(structure) {
-      strMarkers.push(
-        new google.maps.Marker({
-          position: {
-            lat: Number(structure.latitude),
-            lng: Number(structure.longitude)
-          },
-          map: map,
-          label: 'S',
-          title: structure.str_name
-        })
-      )
+      addStrMarker(structure)
     });
     strMarkers.forEach(function(strMarker) {
       strMarker.setMap(map);
     })
     clearInterval(showStructuresInterval);
   }
+}
+
+function addStructure(structure) {
+  structures.push(structure)
+  addStrMarker(structure)
+}
+
+function addStrMarker(structure) {
+  strMarkers.push(
+    new google.maps.Marker({
+      position: {
+        lat: Number(structure.latitude),
+        lng: Number(structure.longitude)
+      },
+      map: map,
+      title: structure.str_name
+    })
+  )
 }
 
 var showStructuresInterval;

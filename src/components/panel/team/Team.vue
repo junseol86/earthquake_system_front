@@ -72,7 +72,7 @@ export default {
     },
     seeMember (member) {
       if (this.$util.isInDay(member.mbr_pos_last_report)) {
-        window.moveToAndZoom(member, 16)
+        window.moveToAndZoom(member)
       }
     }
   },

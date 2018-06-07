@@ -84,6 +84,10 @@ export default {
         window.setStructures(this.structures)
       })
     },
+    addStructure (structure) {
+      this.structures = [structure].concat(this.structures)
+      window.addStructure(structure)
+    },
     getMembers () {
       this.$axios.get(this.$serverApi + 'member/getList')
       .then((response) => {
@@ -139,6 +143,9 @@ export default {
     this.$bus.$on('setJwtToken', (jwtToken) => {
       this.status.jwtToken = jwtToken
       this.$cookie.set('jwtToken', jwtToken, { expires: 1 })
+    })
+    this.$bus.$on('addStructure', (structure) => {
+      this.addStructure(structure)
     })
 
     this.earthquakes = mock.earthquakes()
