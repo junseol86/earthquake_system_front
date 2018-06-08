@@ -147,6 +147,9 @@ export default {
     this.$bus.$on('addStructure', (structure) => {
       this.addStructure(structure)
     })
+    this.$bus.$on('setStructures', () => {
+      window.setStructures(this.structures)
+    })
 
     this.earthquakes = mock.earthquakes()
     this.getStructures()
