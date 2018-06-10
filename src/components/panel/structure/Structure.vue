@@ -187,28 +187,30 @@ export default {
     },
 
     structureDelete (idx) {
-      var _this = this
-      var toSend = {
-        str_idx: _this.structures[idx].str_idx,
-        jwtToken: _this.status.jwtToken
-      }
-      _this.$axios.post(this.$serverApi + 'structure/delete', this.$qs.stringify(toSend), {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-      }).then((response) => {
-        _this.$bus.$emit('setJwtToken', response.data.jwtToken)
-        if (!response.data.success) {
-          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-        } else {
-          window.alert('삭제되었습니다.')
-          _this.structures.splice(idx, 1)
-          _this.$bus.$emit('setStructures')
+      if (window.confirm('이 구조물을 삭제하시겠습니까?')) {
+        var _this = this
+        var toSend = {
+          str_idx: _this.structures[idx].str_idx,
+          jwtToken: _this.status.jwtToken
         }
-      }).catch((err) => {
-        console.log(err)
-        window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-      })
+        _this.$axios.post(this.$serverApi + 'structure/delete', this.$qs.stringify(toSend), {
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then((response) => {
+          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+          if (!response.data.success) {
+            window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+          } else {
+            window.alert('삭제되었습니다.')
+            _this.structures.splice(idx, 1)
+            _this.$bus.$emit('setStructures')
+          }
+        }).catch((err) => {
+          console.log(err)
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+        })
+      }
 
     }
 

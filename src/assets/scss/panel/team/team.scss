@@ -22,19 +22,42 @@
             padding: 0 4px 0 16px;
             font-size: 0.9em;
             width: 44px;
+            height: 44px;
           }
 
           .members {
             padding: 8px;
             text-align: left;
-            select {
-              height: 28px;
-              line-height: 28px;
+            & > div {
+              display: inline-block;
               margin: 4px;
+              padding: 3px 2px 3px 6px;
+              border: 1px solid #ddd;
+              background-color: white;
+              border-radius: 4px;
+              &.hasArr {
+                color: #527CE9;
+                font-weight: bold;
+              }
               &.hasPos {
                 font-weight: bold;
                 color: #527CE9;
+                cursor: pointer;
+                &:hover {
+                border: 1px solid #527CE9;
+                }
               }
+              .name {
+                font-size: 0.9em;
+              }
+            }
+            select {
+              height: 28px;
+              line-height: 28px;
+              margin-left: 2px;
+              outline: none;
+              border: 1px solid #ddd;
+              border-radius: 2px;
             }
           }
         }

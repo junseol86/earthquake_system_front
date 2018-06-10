@@ -1,6 +1,9 @@
 <template>
   <div id="console">
-    <div id="wrapper">
+    <div id="wrapper"
+      :style="{
+        height: `${sizes.winH}px`
+        }">
       <table id="consoleTable"
         :style="{
           width: `${sizes.winW}px`,
@@ -143,6 +146,9 @@ export default {
     this.$bus.$on('setJwtToken', (jwtToken) => {
       this.status.jwtToken = jwtToken
       this.$cookie.set('jwtToken', jwtToken, { expires: 1 })
+    })
+    this.$bus.$on('getMembers', () => {
+      this.getMembers()
     })
     this.$bus.$on('addStructure', (structure) => {
       this.addStructure(structure)

@@ -19,16 +19,28 @@
           <tr class="team" v-for="(team, t_idx) in teams" :key="t_idx">
             <td class="title">{{team.no == 0 ? '미편성' : team.no + '조'}}</td>
             <td class="members">
-              <select v-for="(member, m_idx) in team.members" :key="m_idx" 
-                :class="isPosReported(member.mbr_pos_last_report) ? 'hasPos' : ''"
+              <div v-for="(member, m_idx) in team.members" 
+                :key="m_idx"
+                :class="(isPosReported(member.mbr_pos_last_report) ? 'hasPos ' : ' ')
+                   + (isArrReported(member.mbr_arr_last_report) ? 'hasArr' : '')"
                 @click="seeMember(member)">
-                <option>
-                  {{isPosReported(member.mbr_pos_last_report) ? '◉ ' : ''}}
+                <span class="name">
+                  <i v-if="isPosReported(member.mbr_pos_last_report)" class="fas fa-map-marker"></i>
                   {{member.mbr_name}}
                   {{arriveInIfInDay(member.mbr_arr_last_report, member.mbr_arrive_in)}}
-                </option>
-                <option v-for="(team, tt_idx) in teams" :key="tt_idx">→ {{team.no}}조</option>
-              </select>
+                </span>
+                <select v-model="member.mbr_team" :value="member.mbr_team"
+                  @change="changeTeam(member.mbr_idx, member.mbr_team)">
+                  <option v-for="(team, tt_idx) in teams" 
+                    :key="tt_idx" 
+                    :value="tt_idx">
+                    {{team.no}}조
+                  </option>
+                  <option :value="-1">
+                   ✕ 삭제
+                  </option>
+                </select>
+              </div>
             </td>
           </tr>
         </table>
@@ -67,12 +79,67 @@ export default {
         return ''
       }
     },
+    isArrReported (arr_last_report) {
+      return this.$util.isInDay(arr_last_report)
+    },
     isPosReported (pos_last_report) {
       return this.$util.isInDay(pos_last_report)
     },
     seeMember (member) {
       if (this.$util.isInDay(member.mbr_pos_last_report)) {
         window.moveToAndZoom(member)
+      }
+    },
+    changeTeam(mbr_idx, team) {
+      if (team == -1) {
+        this.deleteMember(mbr_idx)
+      } else {
+        var _this = this
+        var toSend = {
+          mbr_idx: mbr_idx,
+          team: team,
+          jwtToken: _this.status.jwtToken
+        }
+        _this.$axios.put(this.$serverApi + 'member/changeTeam', this.$qs.stringify(toSend), {
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then((response) => {
+          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+          if (!response.data.success) {
+            window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+          } else {
+            this.$bus.$emit('getMembers')
+          }
+        }).catch((err) => {
+          console.log(err)
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+        })
+      }
+
+    },
+    deleteMember (mbr_idx) {
+      if (window.confirm('이 계정을 삭제하시겠습니까?')) {
+        var _this = this
+        var toSend = {
+          mbr_idx: mbr_idx,
+          jwtToken: _this.status.jwtToken
+        }
+        _this.$axios.post(this.$serverApi + 'member/delete', this.$qs.stringify(toSend), {
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        }).then((response) => {
+          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+          if (!response.data.success) {
+            window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+          } else {
+            this.$bus.$emit('getMembers')
+          }
+        }).catch((err) => {
+          console.log(err)
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+        })
       }
     }
   },
