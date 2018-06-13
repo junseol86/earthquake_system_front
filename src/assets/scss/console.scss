@@ -5,11 +5,52 @@
     #consoleTable {
       position: absolute;
       #topbar {
+        position: relative;
         background-color: #444;
         color: white;
         padding: 0 16px;
         text-align: left;
         font-size: 1.2em;
+        table {
+          position: absolute;
+          top: 11px;
+          right: 11px;
+          font-size: 0.9em;
+          td {
+            background-color: #333;
+            border: 1px solid #222;
+            height: 32px;
+            line-height: 32px;
+            padding: 0 12px;
+            &.space {
+              background-color: #444;
+              border-top: 0;
+              border-bottom: 0;
+              width: 6px;
+              padding: 0
+            }
+            &.inputCon {
+              padding: 0;
+            }
+            &.button {
+              cursor: pointer;
+              &:hover {
+                background-color: #222;
+              }
+            }
+            input {
+              width: 120px;
+              height: 32px;
+              line-height: 32px;
+              border: 0;
+              outline: none;
+              background-color: #222;
+              color: white;
+              text-align: center;
+              font-size: 1em;
+            }
+          }
+        }
       }
       #panelCon {
         border-right: 1px solid #555;

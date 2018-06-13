@@ -101,9 +101,7 @@ export default {
           jwtToken: _this.status.jwtToken
         }
         _this.$axios.put(this.$serverApi + 'member/changeTeam', this.$qs.stringify(toSend), {
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then((response) => {
           _this.$bus.$emit('setJwtToken', response.data.jwtToken)
           if (!response.data.success) {
@@ -126,9 +124,7 @@ export default {
           jwtToken: _this.status.jwtToken
         }
         _this.$axios.post(this.$serverApi + 'member/delete', this.$qs.stringify(toSend), {
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then((response) => {
           _this.$bus.$emit('setJwtToken', response.data.jwtToken)
           if (!response.data.success) {

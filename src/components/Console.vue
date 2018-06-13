@@ -17,6 +17,26 @@
               lineHeight: `${sizes.topbarH}px`
             }">
             경주도로공사 지진관리 시스템
+            <table v-if="status.jwtToken.length > 0">
+              <tr>
+                <td>
+                  <span>
+                    가입코드 수정
+                  </span>
+                </td>
+                <td class="inputCon">
+                  <input type="text" maxlength="10" v-model="registerCode"/>
+                </td>
+                <td class="button" @click="registerCodeModify()">
+                  확인
+                </td>
+                <td class="space">
+                </td>
+                <td class="button" @click="logout()">
+                  로그아웃
+                </td>
+              </tr>
+            </table>
           </td>
         </tr>
         <tr>
@@ -47,8 +67,6 @@
 import Panel from './panel/Panel'
 import GoogleMap from './google_map/GoogleMap'
 
-import mock from '../../mock'
-
 export default {
   name: 'console',
   components: {
@@ -57,8 +75,9 @@ export default {
   data () {
     return {
       status: {
-        jwtToken: undefined
+        jwtToken: ''
       },
+      registerCode: '',
       structures: [],
       earthquakes: [],
       teams: [],
@@ -79,6 +98,18 @@ export default {
       if (window.navigator.platform.indexOf('Mac') < 0) {
         this.sizes.scrollBarW = 17
       }
+    },
+
+    logout () {
+      this.status.jwtToken = ''
+      this.$cookie.set('jwtToken', '')
+    },
+
+    getEarthquakes () {
+      this.$axios.get(this.$serverApi + 'earthquake/getList')
+      .then((response) => {
+        this.earthquakes = response.data
+      })
     },
     getStructures () {
       this.$axios.get(this.$serverApi + 'structure/getList')
@@ -109,6 +140,45 @@ export default {
         this.showMembersOnMap(members)
       })
     },
+
+    getRegisterCode () {
+      var _this = this
+      _this.$axios.get(_this.$serverApi + 'code/getCode',
+      { headers: { 'code': 'register' } })
+      .then((response) => {
+        _this.registerCode = response.data.cd_code
+      }).catch((err) => {
+        console.log(err)
+      })
+    },
+    registerCodeModify () {
+      var _this = this
+      if (_this.registerCode.length < 6) {
+        window.alert('6글자 이상 입력해주세요.')
+        return
+      }
+      var toSend = {
+        jwtToken: _this.status.jwtToken,
+        name: 'register',
+        code: _this.registerCode
+      }
+      _this.$axios.put(_this.$serverApi + 'code/modify', _this.$qs.stringify(toSend), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((response) => {
+        _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+        if (!response.data.success) {
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+        } else {
+          window.alert('수정되었습니다.')
+          _this.getRegisterCode()
+        }
+      }).catch((err) => {
+        console.log(err)
+        window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+      })
+
+    },
+
     showMembersOnMap (members) {
       var _this = this
       var reported = []
@@ -123,13 +193,10 @@ export default {
       var _this = this
       _this.$axios.post(_this.$serverApi + 'member/tokenLogin',
       _this.$qs.stringify({ jwtToken: jwtToken }),
-      {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-      })
+      { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
       .then((response) => {
         _this.status.jwtToken = response.data
+        _this.getRegisterCode()
       }).catch((err) => {
         console.log(err)
         _this.status.jwtToken = undefined
@@ -146,6 +213,10 @@ export default {
     this.$bus.$on('setJwtToken', (jwtToken) => {
       this.status.jwtToken = jwtToken
       this.$cookie.set('jwtToken', jwtToken, { expires: 1 })
+      this.getRegisterCode()
+    })
+    this.$bus.$on('getEarthquakes', () => {
+      this.getEarthquakes()
     })
     this.$bus.$on('getMembers', () => {
       this.getMembers()
@@ -157,12 +228,12 @@ export default {
       window.setStructures(this.structures)
     })
 
-    this.earthquakes = mock.earthquakes()
+    this.getEarthquakes()
     this.getStructures()
     this.getMembers()
 
     var jwtToken = this.$cookie.get('jwtToken')
-    if (jwtToken != undefined) {
+    if (jwtToken.length > 0) {
       this.tokenLogin(jwtToken)
     }
   }

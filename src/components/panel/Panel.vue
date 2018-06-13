@@ -6,7 +6,7 @@
           width: `${sizes.panelW}px`,
           height: `${sizes.winH - sizes.topbarH}px`
         }">
-        <table v-if="status.jwtToken != null" id="panelTop"
+        <table v-if="status.jwtToken.length > 0" id="panelTop"
           :style="{
             height: `${sizes.panelTopH}px`
           }">

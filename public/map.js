@@ -57,8 +57,8 @@ function drawEqCircles (earthquake) {
       fillOpacity: 0.1,
       map: map,
       center: {
-        lat: earthquake.latitude,
-        lng: earthquake.longitude,
+        lat: Number(earthquake.latitude),
+        lng: Number(earthquake.longitude),
       },
       radius: radPerTeam * (i + 1)
     });

@@ -52,13 +52,16 @@
           }
           input {
             vertical-align: top;
-            width: 120px;
+            width: 92px;
             height: 26px;
             line-height: 26px;
             margin: 0;
             outline: none;
             border: 1px solid #ddd;;
             padding: 4px;
+            &.short {
+              width: 40px;
+            }
           }
           #space {
             height: 6px;
@@ -73,6 +76,27 @@
           width: 100%;
           border-bottom: 1px solid #ddd;
           cursor: pointer;
+          span {
+            margin: 0 4px;
+            &.stat {
+              margin-left: 0;
+              border: 1px solid #ccc;
+              background-color: white;
+              padding: 4px 6px;
+              cursor: pointer;
+              &:hover {
+                border: 1px solid #888;
+              }
+              &.active {
+                border: 0;
+                background-color: #555;
+                color: white;
+                &:hover {
+                  background-color: #333;
+                }
+              }
+            }
+          }
           &:nth-child(odd) {
             background-color: #fafafa;
           }
@@ -81,15 +105,16 @@
           }
 
           &:hover {
-            .sendAlarmBtn {
+            .deleteBtn, .sendAlarmBtn {
               display: inline;
             }
           }
-          .sendAlarmBtn {
+          .deleteBtn, .sendAlarmBtn {
             display: none;
             border: 1px solid #ccc;
             background-color: white;
             padding: 4px 6px;
+            margin-left: 4px;
             &:hover {
               border: 1px solid #555;
               background-color: #555;
@@ -102,7 +127,7 @@
             line-height: 48px;
             padding: 0 16px;
             text-align: left;
-            &.sendAlarm {
+            &.buttons {
               text-align: right;
             }
           }

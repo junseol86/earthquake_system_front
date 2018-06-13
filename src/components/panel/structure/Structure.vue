@@ -56,10 +56,10 @@
                     </td>
                     <td class="buttons">
 
-                      <div @click="structureModify(idx)">
+                      <div @click.stop="structureModify(idx)">
                         <i class="fas fa-upload"></i> 수정
                       </div>
-                      <div @click="structureDelete(idx)">
+                      <div @click.stop="structureDelete(idx)">
                         <i class="fas fa-trash"></i> 삭제
                       </div>
 
@@ -126,12 +126,10 @@ export default {
         alert('모든 항목을 입력해주세요.')
         return
       }
-      var toSend = this.strInsert
+      var toSend = _this.strInsert
       toSend.jwtToken = _this.status.jwtToken
-      _this.$axios.post(this.$serverApi + 'structure/insert', this.$qs.stringify(toSend), {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
+      _this.$axios.post(_this.$serverApi + 'structure/insert', _this.$qs.stringify(toSend), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }).then((response) => {
         _this.$bus.$emit('setJwtToken', response.data.jwtToken)
         if (!response.data.success) {
@@ -166,10 +164,8 @@ export default {
       }
       var toSend = structure
       toSend.jwtToken = _this.status.jwtToken
-      _this.$axios.put(this.$serverApi + 'structure/modify', this.$qs.stringify(toSend), {
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
+      _this.$axios.put(_this.$serverApi + 'structure/modify', _this.$qs.stringify(toSend), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       }).then((response) => {
         _this.$bus.$emit('setJwtToken', response.data.jwtToken)
         if (!response.data.success) {
@@ -194,9 +190,7 @@ export default {
           jwtToken: _this.status.jwtToken
         }
         _this.$axios.post(this.$serverApi + 'structure/delete', this.$qs.stringify(toSend), {
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
         }).then((response) => {
           _this.$bus.$emit('setJwtToken', response.data.jwtToken)
           if (!response.data.success) {
