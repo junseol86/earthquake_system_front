@@ -1,8 +1,8 @@
 var readyToInit = false;
 
+var earthquake = null;
 var map = undefined;
-var eqCircles = [];
-var radPerTeam = 1600;
+var eqCircle = null;
 var structures = [];
 var strMarkers = [];
 var members = [];
@@ -44,25 +44,50 @@ function moveToAndZoom (position, zoom) {
   }
 }
 
-function drawEqCircles (earthquake) {
-  eqCircles.forEach(function (eqCircle) {
-    eqCircle.setMap(null);
-  });
-  eqCircles = [];
-  for (var i = 0; i < 10; i++) {
-    var eqCircle = new google.maps.Circle({
+
+var drawEqCircleInterval;
+function tryDrawEqCircle() {
+  drawEqCircleInterval = setInterval(drawEqCircle, 100);
+}
+function drawEqCircle () {
+  if (readyToInit) {
+    if (eqCircle != null)
+      eqCircle.setMap(null);
+    eqCircle = null;
+    if (earthquake == null) return;
+    var eq = earthquake;
+    var dist = 0;
+
+    if (eq.eq_type == 'inland') {
+      if (eq.eq_strength >= 3.5 & eq.eq_strength < 4) {
+        dist = 25;
+      } else if (eq.eq_strength >= 4 && eq.eq_strength < 5) {
+        dist = 50;
+      } else if (eq.eq_strength >= 5) {
+        dist = 100;
+      }
+    } else if (eq.eq_type == 'waters') {
+      if (eq.eq_strength >= 4 & eq.eq_strength < 4.5) {
+        dist = 25;
+      } else if (eq.eq_strength >= 4.5 && eq.eq_strength < 5.5) {
+        dist = 50;
+      } else if (eq.eq_strength >= 5.5) {
+        dist = 100;
+      }
+    }
+    eqCircle = new google.maps.Circle({
       strokeColor: '#527CE9',
       strokeOpacity: 0.67,
-      fillColor: 'rgba(1, 1, 1, 0)',
-      fillOpacity: 0.1,
+      fillColor: '#527CE9',
+      fillOpacity: 0.3,
       map: map,
       center: {
         lat: Number(earthquake.latitude),
         lng: Number(earthquake.longitude),
       },
-      radius: radPerTeam * (i + 1)
+      radius: dist * 1000
     });
-    eqCircles.push(eqCircle);
+    clearInterval(drawEqCircleInterval);
   }
 }
 
@@ -94,6 +119,14 @@ function addStructure(structure) {
 }
 
 function addStrMarker(structure) {
+
+  var mkrImg = {
+    url: 'http://35.229.252.63:8080/static/images/mark_' + structure.color + '.png',
+    size: new google.maps.Size(25, 32),
+    origin: new google.maps.Point(0, 0),
+    anchor: new google.maps.Point(0, 16)
+  }
+
   strMarkers.push(
     new google.maps.Marker({
       position: {
@@ -101,7 +134,8 @@ function addStrMarker(structure) {
         lng: Number(structure.longitude)
       },
       map: map,
-      title: structure.str_name
+      title: structure.str_name,
+      icon: mkrImg
     })
   )
 }

@@ -54,8 +54,7 @@
             height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - sitSize.eqInputH - 1}px`
           }">
           <div>
-            <table v-for="(earthquake, idx) in earthquakes" :key="idx"
-              @click="showEarthquake(earthquake, 12)">
+            <table v-for="(earthquake, idx) in earthquakes" :key="idx">
               <tr>
                 <td>
                   <span v-if="earthquake.eq_active > 0" class="stat active"
@@ -202,10 +201,6 @@ export default {
           window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
         })
       }
-    },
-    showEarthquake (earthquake, zoom) {
-      window.moveToAndZoom(earthquake, zoom)
-      window.drawEqCircles(earthquake)
     }
   },
   mounted () {

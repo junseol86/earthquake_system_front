@@ -80,6 +80,7 @@ export default {
       registerCode: '',
       structures: [],
       earthquakes: [],
+      activeEq: null,
       teams: [],
       sizes: {
         winW: 0,
@@ -109,13 +110,31 @@ export default {
       this.$axios.get(this.$serverApi + 'earthquake/getList')
       .then((response) => {
         this.earthquakes = response.data
+
+        var thereIsActive = false
+        this.earthquakes.map((earthquake) => {
+          if (earthquake.eq_active == 1) {
+            this.activeEq = earthquake
+            thereIsActive = true
+          }
+        })
+        if (thereIsActive == false) {
+          this.activeEq = null
+        }
+        window.earthquake = this.activeEq
+        window.tryDrawEqCircle()
+        this.getStructures()
       })
     },
     getStructures () {
-      this.$axios.get(this.$serverApi + 'structure/getList')
+      var _this = this
+      _this.$axios.get(_this.$serverApi + 'structure/getList')
       .then((response) => {
-        this.structures = response.data
-        window.setStructures(this.structures)
+        _this.structures = response.data
+        _this.structures.map((structure) => {
+          structure.color = _this.$util.setStructureColor(structure, _this.activeEq)
+        })
+        window.setStructures(_this.structures)
       })
     },
     addStructure (structure) {
@@ -229,7 +248,6 @@ export default {
     })
 
     this.getEarthquakes()
-    this.getStructures()
     this.getMembers()
 
     var jwtToken = this.$cookie.get('jwtToken')
