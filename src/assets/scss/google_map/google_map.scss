@@ -6,5 +6,40 @@
       background-color: #527CE9;
       border: 1px solid white;
     }
+    #markerDesc {
+      position: absolute;
+      top: 48px;
+      left: 10px;
+      & > tr {
+
+        & > td {
+          &:first-child {
+            padding-right: 0;
+          }
+          background-color: rgba(0, 0, 0, 0.8);
+          color: white;
+          border-bottom: 1px solid black;
+          padding: 8px 12px 12px 12px;
+          vertical-align: middle;
+          text-align: left;
+          line-height: 1.3em;
+          font-size: 0.85em;
+          span {
+            color: skyblue;
+            font-weight: bold;
+            line-height: 2em;
+          }
+        }
+        &:last-child {
+          td {
+            border-bottom: 0;
+          }
+        }
+
+      }
+      img {
+        width: 24px;
+      }
+    }
   }
 }

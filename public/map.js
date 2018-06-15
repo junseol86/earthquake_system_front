@@ -1,8 +1,10 @@
 var readyToInit = false;
+var mapReady = false;
 
 var earthquake = null;
 var map = undefined;
 var eqCircle = null;
+var subCircles = [];
 var structures = [];
 var strMarkers = [];
 var members = [];
@@ -18,6 +20,7 @@ function initMap() {
       center: {lat: 35.74095, lng: 129.4432829},
       zoom: 11
     });
+    mapReady = true;
 
     map.addListener('click', function (clicked) {
       console.log(clicked.latLng.lng() + ' ' + clicked.latLng.lat());
@@ -47,10 +50,14 @@ function moveToAndZoom (position, zoom) {
 
 var drawEqCircleInterval;
 function tryDrawEqCircle() {
-  drawEqCircleInterval = setInterval(drawEqCircle, 100);
+  if (mapReady) {
+    drawEqCircle();
+  } else {
+    drawEqCircleInterval = setInterval(drawEqCircle, 100);
+  }
 }
 function drawEqCircle () {
-  if (readyToInit) {
+  if (mapReady) {
     if (eqCircle != null)
       eqCircle.setMap(null);
     eqCircle = null;
@@ -87,6 +94,30 @@ function drawEqCircle () {
       },
       radius: dist * 1000
     });
+
+    subCircles.forEach(function(subCircle) {
+      subCircle.setMap(null);
+    })
+    subCircles = [];
+    for (var i = 1; i < dist / 5; i++) {
+      console.log(i);
+
+      var subCircle = new google.maps.Circle({
+        strokeColor: '#527CE9',
+        strokeOpacity: 0.67,
+        strokeWeight: 1,
+        fillColor: '#527CE9',
+        fillOpacity: 0,
+        map: map,
+        center: {
+          lat: Number(earthquake.latitude),
+          lng: Number(earthquake.longitude),
+        },
+        radius: i * 5 * 1000
+      });
+      subCircles.push(subCircle);
+    }
+
     clearInterval(drawEqCircleInterval);
   }
 }
@@ -96,8 +127,17 @@ function setStructures(_structures) {
   tryShowStructues();
 }
 
+var showStructuresInterval;
+function tryShowStructues() {
+  if (mapReady) {
+    showStructures();
+  } else {
+    showStructuresInterval = setInterval(showStructures, 100);
+  }
+}
+
 function showStructures() {
-  if (readyToInit) {
+  if (mapReady) {
     strMarkers.forEach(function(strMarker) {
       strMarker.setMap(null);
     });
@@ -124,11 +164,17 @@ function addStrMarker(structure) {
     url: 'http://35.229.252.63:8080/static/images/mark_' + structure.color + '.png',
     size: new google.maps.Size(25, 32),
     origin: new google.maps.Point(0, 0),
-    anchor: new google.maps.Point(0, 16)
+    anchor: new google.maps.Point(12.5, 32)
   }
 
-  strMarkers.push(
-    new google.maps.Marker({
+  var contentString = '<div class="infoWindow">' + structure.str_branch;
+  contentString += ' ' + structure.str_line + '<br>';
+  contentString += '<span>' + structure.str_name + '</span></div>';
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+  
+  var marker = new google.maps.Marker({
       position: {
         lat: Number(structure.latitude),
         lng: Number(structure.longitude)
@@ -137,12 +183,14 @@ function addStrMarker(structure) {
       title: structure.str_name,
       icon: mkrImg
     })
-  )
-}
 
-var showStructuresInterval;
-function tryShowStructues() {
-  showStructuresInterval = setInterval(showStructures, 100);
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+
+  strMarkers.push(
+    marker
+  )
 }
 
 function setMembers(_members) {
@@ -150,8 +198,18 @@ function setMembers(_members) {
  tryShowMembers();
 }
 
+
+var showMembersInterval;
+function tryShowMembers() {
+  if (mapReady) {
+    showMembers();
+  } else {
+    showMembersInterval = setInterval(showMembers, 100);
+  }
+}
+
 function showMembers() {
-  if (readyToInit) {
+  if (mapReady) {
     mbrMarkers.forEach(function(mbrMarker) {
       mbrMarker.setMap(null);
     });
@@ -172,9 +230,4 @@ function showMembers() {
     })
     clearInterval(showMembersInterval)
   }
-}
-
-var showMembersInterval;
-function tryShowMembers() {
-  showMembersInterval = setInterval(showMembers, 100);
 }

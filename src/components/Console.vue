@@ -138,6 +138,7 @@ export default {
       })
     },
     addStructure (structure) {
+      structure.color = this.$util.setStructureColor(structure, this.activeEq)
       this.structures = [structure].concat(this.structures)
       window.addStructure(structure)
     },

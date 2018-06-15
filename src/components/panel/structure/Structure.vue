@@ -135,8 +135,8 @@ export default {
         if (!response.data.success) {
           window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
         } else {
+          _this.$bus.$emit('setStructures')
           _this.$bus.$emit('addStructure', response.data.structure)
-          _this.seeStructure(response.data.structure)
           _this.strInsert = {
             branch: '',
             line: '',
