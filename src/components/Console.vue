@@ -143,9 +143,14 @@ export default {
       window.addStructure(structure)
     },
     getMembers () {
-      this.$axios.get(this.$serverApi + 'member/getList')
+      var _this = this
+      _this.$axios.get(this.$serverApi + 'member/getList')
       .then((response) => {
         var members = response.data
+        members.map((member) => {
+          member.hasPos = _this.isPosReported(member.mbr_pos_last_report)
+          member.arrival = _this.arriveInIfInDay(member.mbr_arr_last_report, member.mbr_arrive_in)
+        })
         var teams = []
         for (var i = 0; i <= 10; i++) {
           teams.push({
@@ -161,10 +166,25 @@ export default {
       })
     },
 
+    // 하루 이내 보고되었을 시 도착 예상 시간
+    arriveInIfInDay (arr_last_report, arrive_in) {
+      if (this.$util.isInDay(arr_last_report)) {
+        return this.$util.willComeUntil(arrive_in)
+      } else {
+        return ''
+      }
+    },
+    isArrReported (arr_last_report) {
+      return this.$util.isInDay(arr_last_report)
+    },
+    isPosReported (pos_last_report) {
+      return this.$util.isInDay(pos_last_report)
+    },
+
+    // 회원가입 코드
     getRegisterCode () {
       var _this = this
-      _this.$axios.get(_this.$serverApi + 'code/getCode',
-      { headers: { 'code': 'register' } })
+      _this.$axios.get(_this.$serverApi + 'code/getRegisterCode')
       .then((response) => {
         _this.registerCode = response.data.cd_code
       }).catch((err) => {
@@ -200,10 +220,9 @@ export default {
     },
 
     showMembersOnMap (members) {
-      var _this = this
       var reported = []
       members.map(function(member) {
-        if (_this.$util.isInDay(member.mbr_pos_last_report)) {
+        if (member.hasPos) {
           reported.push(member)
         }
       })

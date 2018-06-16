@@ -10,6 +10,9 @@ var strMarkers = [];
 var members = [];
 var mbrMarkers = [];
 
+var initPos = { lat: 35.74095, lng: 129.4432829 };
+var initZoom = 11;
+
 function getReadyToInit() {
   readyToInit = true;
 }
@@ -17,8 +20,8 @@ function initMap() {
   // Create a map object and specify the DOM element for display.
   if (readyToInit) {
     map = new google.maps.Map(document.getElementById('map'), {
-      center: {lat: 35.74095, lng: 129.4432829},
-      zoom: 11
+      center: initPos,
+      zoom: initZoom
     });
     mapReady = true;
 
@@ -47,6 +50,11 @@ function moveToAndZoom (position, zoom) {
   }
 }
 
+function toInitPosZm() {
+  map.panTo(initPos);
+  map.setZoom(initZoom);
+}
+
 
 var drawEqCircleInterval;
 function tryDrawEqCircle() {
@@ -61,6 +69,12 @@ function drawEqCircle () {
     if (eqCircle != null)
       eqCircle.setMap(null);
     eqCircle = null;
+
+    subCircles.forEach(function(subCircle) {
+      subCircle.setMap(null);
+    })
+    subCircles = [];
+
     if (earthquake == null) return;
     var eq = earthquake;
     var dist = 0;
@@ -95,13 +109,7 @@ function drawEqCircle () {
       radius: dist * 1000
     });
 
-    subCircles.forEach(function(subCircle) {
-      subCircle.setMap(null);
-    })
-    subCircles = [];
     for (var i = 1; i < dist / 5; i++) {
-      console.log(i);
-
       var subCircle = new google.maps.Circle({
         strokeColor: '#527CE9',
         strokeOpacity: 0.67,
@@ -216,17 +224,41 @@ function showMembers() {
     mbrMarkers = [];
 
     members.forEach(function(member) {
-      mbrMarkers.push(
-        new google.maps.Marker({
+
+      var mkrImg = {
+        url: 'http://35.229.252.63:8080/static/images/member' + (member.arrival.length > 0 ? '_pos' : '') + '.png',
+        size: new google.maps.Size(26, 41),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(13, 41)
+      }
+
+      var contentString = '<div class="infoWindow">';
+      contentString += '[' + (member.mbr_team == 0 ? '미편성' : (member.mbr_team + '조')) + '] ';
+      contentString += member.mbr_name;
+      contentString += member.arrival;
+      contentString += '<br>';
+      contentString += '☎︎ ' + member.mbr_phone;
+      contentString += '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      var marker = new google.maps.Marker({
           position: {
             lat: Number(member.latitude),
             lng: Number(member.longitude)
           },
           map: map,
-          label: 'M',
-          title: member.mbr_name
+          title: member.mbr_name,
+          icon: mkrImg
         })
-      )
+
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+
+      mbrMarkers.push(marker)
     })
     clearInterval(showMembersInterval)
   }

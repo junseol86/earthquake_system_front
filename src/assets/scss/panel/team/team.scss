@@ -50,6 +50,14 @@
               .name {
                 font-size: 0.9em;
               }
+              i.fas.fa-phone-square {
+                font-size: 0.9em;
+                opacity: 0.5;
+                cursor: pointer;
+                &:hover {
+                  opacity: 1;
+                }
+              }
             }
             select {
               height: 28px;

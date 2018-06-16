@@ -74,6 +74,10 @@
         </tr>
       </table>
 
+      <div id="toInitPosZm" @click="toInitPosZm()">
+        <i class="fas fa-compass"></i> 초기 위치로
+      </div>
+
     </div>
   </div>
 </template>
@@ -84,6 +88,11 @@ export default {
   props: ['sizes'],
   data () {
     return {
+    }
+  },
+  methods: {
+    toInitPosZm () {
+      window.toInitPosZm()
     }
   },
   mounted () {
