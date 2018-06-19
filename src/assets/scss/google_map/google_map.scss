@@ -38,14 +38,19 @@
           color: white;
           border-bottom: 1px solid black;
           padding: 6px 10px 10px 10px;
-          vertical-align: middle;
+          vertical-align: top;
           text-align: left;
           line-height: 1.3em;
           font-size: 0.85em;
-          span {
+          h1 {
             color: skyblue;
             font-weight: bold;
             line-height: 2em;
+          }
+          span {
+            opacity: 0.67;
+            display: inline-block;
+            margin-top: 4px;
           }
         }
         &:last-child {
@@ -57,6 +62,7 @@
       }
       img {
         width: 20px;
+        margin-top: 6px;
       }
     }
   }

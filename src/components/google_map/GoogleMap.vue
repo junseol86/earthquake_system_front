@@ -28,7 +28,7 @@
             <img src="../../assets/img/mark_grey.png"/>
           </td>
           <td>
-            <span>출동없음 - 자체대응</span><br>
+            <h1>출동없음 - 자체대응</h1>
             해당없음
           </td>
         </tr>
@@ -37,9 +37,14 @@
             <img src="../../assets/img/mark_green.png"/>
           </td>
           <td>
-            <span>2조 이하 - 자체대응</span><br>
+            <h1>자체대응</h1>
+            점검반: 4조 이하<br>
+            비탈면: 9, 10조<br>
+            <span>
             본사: 사장 등 3명<br>
             본부: 차장 등 2명
+            </span>
+            
           </td>
         </tr>
         <tr>
@@ -47,9 +52,13 @@
             <img src="../../assets/img/mark_yellow.png"/>
           </td>
           <td>
-            <span>4조 이하 - 대응 1단계</span><br>
+            <h1>대응 1단계</h1>
+            점검반: 6조 이하<br>
+            비탈면: 9, 10조<br>
+            <span>
             본사: 구조물처장 등 14명<br>
             본부: 처장 등 7명
+            </span>
           </td>
         </tr>
         <tr>
@@ -57,9 +66,13 @@
             <img src="../../assets/img/mark_red.png"/>
           </td>
           <td>
-            <span>6조 이하 - 대응 2단계</span><br>
+            <h1>대응 2단계</h1>
+            점검반: 8조 이하<br>
+            비탈면: 9, 10조<br>
+            <span>
             본사: 본부장 등 10명<br>
             본부: 지사장 등 9명
+            </span>
           </td>
         </tr>
         <tr>
@@ -67,9 +80,11 @@
             <img src="../../assets/img/mark_purple.png"/>
           </td>
           <td>
-            <span>8조 이하 - 대응 2단계</span><br>
+            <h1>대응 2단계</h1>
+            <span>
             본사: 차장 등 2명<br>
             본부: 차, 과장 1명
+            </span>
           </td>
         </tr>
       </table>

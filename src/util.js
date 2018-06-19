@@ -47,7 +47,7 @@ const funcs = {
           if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 100) {
             return 'red'
           }
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) > 100) {
+          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) >= 100) {
             return 'purple'
           }
         }
@@ -64,7 +64,7 @@ const funcs = {
           if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 100) {
             return 'red'
           }
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) > 100) {
+          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) >= 100) {
             return 'purple'
           }
         }

@@ -79,6 +79,7 @@ export default {
       },
       registerCode: '',
       structures: [],
+      spots: [],
       earthquakes: [],
       activeEq: null,
       teams: [],
@@ -124,6 +125,7 @@ export default {
         window.earthquake = this.activeEq
         window.tryDrawEqCircle()
         this.getStructures()
+        this.getSpots()
       })
     },
     getStructures () {
@@ -135,6 +137,15 @@ export default {
           structure.color = _this.$util.setStructureColor(structure, _this.activeEq)
         })
         window.setStructures(_this.structures)
+        // this.getSpots()
+      })
+    },
+    getSpots () {
+      var _this = this
+      _this.$axios.get(_this.$serverApi + 'spot/getList')
+      .then((response) => {
+        _this.spots = response.data
+        window.setSpots(_this.spots)
       })
     },
     addStructure (structure) {
@@ -269,6 +280,8 @@ export default {
 
     this.getEarthquakes()
     this.getMembers()
+
+    window.getSpots = this.getSpots
 
     var jwtToken = this.$cookie.get('jwtToken')
     if (jwtToken.length > 0) {

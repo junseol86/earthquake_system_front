@@ -6,6 +6,8 @@ var map = undefined;
 var eqCircle = null;
 var subCircles = [];
 var structures = [];
+var spots = [];
+var spMarkers = [];
 var strMarkers = [];
 var members = [];
 var mbrMarkers = [];
@@ -130,6 +132,8 @@ function drawEqCircle () {
   }
 }
 
+// 구조물
+
 function setStructures(_structures) {
   structures = _structures;
   tryShowStructues();
@@ -162,8 +166,8 @@ function showStructures() {
 }
 
 function addStructure(structure) {
-  structures.push(structure)
-  addStrMarker(structure)
+  structures.push(structure);
+  addStrMarker(structure);
 }
 
 function addStrMarker(structure) {
@@ -201,11 +205,85 @@ function addStrMarker(structure) {
   )
 }
 
+// 고정장소
+
+function setSpots(_spots) {
+  spots = _spots;
+  tryShowSpots();
+}
+
+var showSpotsInterval;
+function tryShowSpots() {
+  if (mapReady) {
+    showSpots();
+  } else {
+    showSpotsInterval = setInterval(showSpots, 100);
+  }
+}
+
+function showSpots() {
+  if (mapReady) {
+    spMarkers.forEach(function(spMarker) {
+      spMarker.setMap(null);
+    });
+    spMarkers = [];
+
+    spots.forEach(function(spot) {
+
+      var sizes = {
+        branch: new google.maps.Size(48, 56),
+        ic: new google.maps.Size(29, 28),
+        jc: new google.maps.Size(29, 28)
+      }
+
+      var anchors = {
+        branch: new google.maps.Point(24, 56),
+        ic: new google.maps.Point(14.5, 28),
+        jc: new google.maps.Point(14.5, 28),
+      }
+
+      var mkrImg = {
+        url: 'http://35.229.252.63:8080/static/images/' + spot.sp_type + '.png',
+        size: sizes[spot.sp_type],
+        origin: new google.maps.Point(0, 0),
+        anchor: anchors[spot.sp_type]
+      }
+
+      var contentString = '<div class="infoWindow">' + spot.sp_name;
+      contentString += '</div>';
+
+      var infowindow = new google.maps.InfoWindow({
+        content: contentString
+      });
+
+      var marker = new google.maps.Marker({
+          position: {
+            lat: Number(spot.latitude),
+            lng: Number(spot.longitude)
+          },
+          map: map,
+          title: spot.sp_name,
+          icon: mkrImg
+        })
+
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+
+      spMarkers.push(marker)
+    })
+
+    clearInterval(showSpotsInterval)
+  }
+
+}
+
+// 직원
+
 function setMembers(_members) {
  members = _members;
  tryShowMembers();
 }
-
 
 var showMembersInterval;
 function tryShowMembers() {
