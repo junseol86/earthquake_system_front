@@ -40,7 +40,6 @@
           <chatting v-if="tab.current == 'chatting'" :sizes="sizes" :status="status"/>
           <structure v-if="tab.current == 'structure'" :sizes="sizes" :status="status"
             :structures="structures"/>
-
         </div>
       </div>
     </div>

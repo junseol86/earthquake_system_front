@@ -54,7 +54,7 @@
             />
           </td>
           <td id="mapCon">
-            <google-map :sizes="sizes" :structures="structures"/>
+            <naver-map :sizes="sizes" :structures="structures"/>
           </td>
         </tr>
       </table>
@@ -65,12 +65,12 @@
 <script>
 
 import Panel from './panel/Panel'
-import GoogleMap from './google_map/GoogleMap'
+import NaverMap from './naver_map/NaverMap'
 
 export default {
   name: 'console',
   components: {
-    Panel, GoogleMap
+    Panel, NaverMap
   },
   data () {
     return {
@@ -122,8 +122,7 @@ export default {
         if (thereIsActive == false) {
           this.activeEq = null
         }
-        window.earthquake = this.activeEq
-        window.tryDrawEqCircle()
+        window.setEarthquake(this.activeEq)
         this.getStructures()
         this.getSpots()
       })
