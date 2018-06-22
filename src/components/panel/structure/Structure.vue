@@ -29,12 +29,37 @@
           </div>
         </div>
       </div>
+
+      <table id="search"
+        :style="{
+          height: `${strSize.searchH}px`,
+          lineHeight: `${strSize.searchH}px`
+          }">
+        <tr>
+          <td class="sign">
+            <i class="fas fa-search"></i>
+          </td>
+          <td>
+            <input placeholder="구조물 이름, 지사, 노선 검색" v-model="searchKwd"/>
+          </td>
+          <td class="sign button" @click="searchKwd = ''">
+            <i class="fas fa-times-circle"></i>
+          </td>
+        </tr>
+      </table>
+
       <div id="structures"
         :style="{
-          height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - strSize.strInputH}px`
+          height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - strSize.strInputH - strSize.searchH}px`
         }">
         <div>
-          <div class="structure" v-for="(structure, idx) in structures" :key="idx"
+          <div class="structure" 
+            v-for="(structure, idx) in structures" 
+            v-if="searchKwd.length == 0 
+            || structure.str_name.includes(searchKwd)
+            || structure.str_branch.includes(searchKwd)
+            || structure.str_line.includes(searchKwd)"
+            :key="idx"
             @click="seeStructure(structure)">
             <div>
               <div>
@@ -100,7 +125,8 @@ export default {
   data () {
     return {
       strSize: {
-        strInputH: 104
+        strInputH: 104,
+        searchH: 40
       },
       strInsert: {
         branch: '',
@@ -108,7 +134,8 @@ export default {
         name: '',
         lat: '',
         lng: ''
-      }
+      },
+      searchKwd: ''
     }
   },
   methods: {

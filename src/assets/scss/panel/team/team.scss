@@ -19,14 +19,14 @@
           }
           .title {
             vertical-align: middle;
-            padding: 0 4px 0 16px;
+            padding-left: 8px;
             font-size: 0.9em;
             width: 44px;
             height: 44px;
           }
 
           .members {
-            padding: 8px;
+            padding: 6px;
             text-align: left;
             & > div {
               display: inline-block;
@@ -48,7 +48,7 @@
                 }
               }
               .name {
-                font-size: 0.9em;
+                font-size: 0.8em;
               }
               i.fas.fa-phone-square {
                 font-size: 0.9em;

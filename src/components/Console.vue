@@ -16,7 +16,7 @@
               height: `${sizes.topbarH}px`,
               lineHeight: `${sizes.topbarH}px`
             }">
-            경주도로공사 지진관리 시스템
+            경주지사 지진관리 시스템
             <table v-if="status.jwtToken.length > 0">
               <tr>
                 <td>
@@ -54,7 +54,7 @@
             />
           </td>
           <td id="mapCon">
-            <naver-map :sizes="sizes" :structures="structures"/>
+            <naver-map :sizes="sizes" :structures="structures" :activeEq="activeEq"/>
           </td>
         </tr>
       </table>
@@ -87,7 +87,7 @@ export default {
         winW: 0,
         winH: 0,
         scrollBarW: 0,
-        panelW: 480,
+        panelW: 440,
         panelTopH: 36,
         topbarH: 56
       }
@@ -132,9 +132,9 @@ export default {
       _this.$axios.get(_this.$serverApi + 'structure/getList')
       .then((response) => {
         _this.structures = response.data
-        _this.structures.map((structure) => {
-          structure.color = _this.$util.setStructureColor(structure, _this.activeEq)
-        })
+        // _this.structures.map((structure) => {
+        //   structure.color = _this.$util.setStructureColor(structure, _this.activeEq)
+        // })
         window.setStructures(_this.structures)
         // this.getSpots()
       })

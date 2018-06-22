@@ -10,7 +10,7 @@
       position: absolute;
       top: 10px;
       left: 10px;
-      width: 160px;
+      width: 128px;
       height: 36px;
       line-height: 36px;
       font-size: 0.9em;
@@ -26,31 +26,27 @@
       position: absolute;
       top: 50px;
       left: 10px;
-      width: 160px;
+      width: 128px;
       border-radius: 2px;
       overflow: hidden;
       & > tr {
         & > td {
-          &:first-child {
-            padding-right: 2px;
-          }
+          height: 40px;
           background-color: rgba(0, 0, 0, 0.8);
           color: white;
           border-bottom: 1px solid black;
-          padding: 6px 10px 10px 10px;
           vertical-align: middle;
           text-align: left;
-          line-height: 1.3em;
-          font-size: 0.85em;
-          h1 {
-            color: skyblue;
-            font-weight: bold;
-            line-height: 2em;
-          }
+          font-size: 0.9em;
+          font-weight: bold;
+          line-height: 2em;
           span {
-            opacity: 0.67;
-            display: inline-block;
-            margin-top: 4px;
+            color: white;
+            opacity: 0.3;
+            &.on {
+              color: yellow;
+              opacity: 1;
+            }
           }
         }
         &:last-child {
@@ -60,9 +56,47 @@
         }
       }
       img {
-        width: 28px;
-        margin-top: 6px;
+        width: 20px;
+        margin: 0 2px 0 10px;
+        vertical-align: middle;
       }
     }
+
+    #strOnTeams {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 220px;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.5);
+      overflow-y: scroll;
+      & > div {
+        margin-bottom: 26px;
+      }
+      .item {
+        background-color: rgba(0, 0, 0, 0.5);
+        border-bottom: 1px solid white;
+        .team {
+          font-size: 0.95em;
+          height: 32px;
+          line-height: 38px;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+        .strs {
+          font-size: 0.9em;
+          padding: 10px;
+          text-align: left;
+          span {
+            display: inline-block;
+            margin: 4px;
+            cursor: pointer;
+            &:hover {
+              color: yellow;
+            }
+          }
+        }
+      }
+    }
+
   }
 }

@@ -12,65 +12,6 @@ const funcs = {
     var now = new Date();
     var willComeUntil = new Date(now.getTime() + arrive_in * 60000);
     return ` - ${willComeUntil.getHours()}:${willComeUntil.getMinutes()} 도착`
-  },
-  degreesToRadians(degrees) {
-    return degrees * Math.PI / 180;
-  },
-  distBwCoords(lat1, lon1, lat2, lon2) {
-    var earthRadiusKm = 6371;
-  
-    var dLat = this.degreesToRadians(lat2-lat1);
-    var dLon = this.degreesToRadians(lon2-lon1);
-  
-    lat1 = this.degreesToRadians(lat1);
-    lat2 = this.degreesToRadians(lat2);
-  
-    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.sin(dLon/2) * Math.sin(dLon/2) * Math.cos(lat1) * Math.cos(lat2); 
-    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-    return earthRadiusKm * c;
-  },
-  setStructureColor(str, eq) {
-    if (eq == null) {
-      return 'grey';
-    } else {
-      if (eq.eq_type == 'inland') {
-        if (eq.eq_strength >= 3.5 & eq.eq_strength < 4) {
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 25) {
-            return 'green'
-          }
-        } else if (eq.eq_strength >= 4 && eq.eq_strength < 5) {
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 50) {
-            return 'yellow'
-          }
-        } else if (eq.eq_strength >= 5) {
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 100) {
-            return 'red'
-          }
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) >= 100) {
-            return 'purple'
-          }
-        }
-      } else if (eq.eq_type == 'waters') {
-        if (eq.eq_strength >= 4 & eq.eq_strength < 4.5) {
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 25) {
-            return 'green'
-          }
-        } else if (eq.eq_strength >= 4.5 && eq.eq_strength < 5.5) {
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 50) {
-            return 'yellow'
-          }
-        } else if (eq.eq_strength >= 5.5) {
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) < 100) {
-            return 'red'
-          }
-          if (this.distBwCoords(str.latitude, str.longitude, eq.latitude, eq.longitude) >= 100) {
-            return 'purple'
-          }
-        }
-      }
-    }
-    return 'grey';
   }
 }
 

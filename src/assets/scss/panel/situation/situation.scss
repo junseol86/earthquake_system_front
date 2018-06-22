@@ -52,7 +52,7 @@
           }
           input {
             vertical-align: top;
-            width: 92px;
+            width: 72px;
             height: 26px;
             line-height: 26px;
             margin: 0;
@@ -71,13 +71,13 @@
       }
       #earthquakes {
         overflow-y: scroll;
-        font-size: 0.9em;
+        font-size: 0.85em;
         table {
           width: 100%;
           border-bottom: 1px solid #ddd;
           cursor: pointer;
           span {
-            margin: 0 4px;
+            margin: 0 2px;
             &.stat {
               margin-left: 0;
               border: 1px solid #ccc;

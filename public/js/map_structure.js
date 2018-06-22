@@ -4,7 +4,8 @@ var strMarkerOpen = '';
 
 // 구조물
 function setStructures(_structures) {
-  structures = _.orderBy(_structures, ['latitude'],['desc']);
+  // structures = _.orderBy(_structures, ['latitude'],['desc']);
+  structures = _structures
   tryShowStructues();
 }
 
@@ -43,7 +44,10 @@ function addStrMarker(structure) {
 
   var contentString = '<div class="infoWindow">' + structure.str_branch;
   contentString += ' ' + structure.str_line + '<br>';
-  contentString += '<span>' + structure.str_name + '</span></div>';
+  contentString += '<span>' + structure.str_name + '</span>';
+  if (structure.on_team > 0)
+    contentString += '<br>담당:' + structure.on_team + '조</div>';
+  contentString += '</div>'
   var infowindow = new naver.maps.InfoWindow({
     content: contentString
   });
@@ -51,7 +55,7 @@ function addStrMarker(structure) {
   var marker = new naver.maps.Marker({
       position: new naver.maps.LatLng(structure.latitude, structure.longitude),
       map: map,
-      icon: 'http://35.229.252.63:8080/static/images/mark_' + structure.color + '.png',
+      icon: 'http://35.229.252.63:8080/static/images/tm_' + structure.on_team + '.png',
       size: new naver.maps.Size(25, 32),
       origin: new naver.maps.Point(0, 0),
       anchor: new naver.maps.Point(12.5, 32)

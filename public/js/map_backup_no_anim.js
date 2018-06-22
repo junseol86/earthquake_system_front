@@ -10,7 +10,6 @@ var eq_color = '';
 
 var eqCircle = null;
 var subCircles = [];
-var subAnimCircles = [];
 
 var initPos = null;
 var initZoom = 5;
@@ -42,14 +41,14 @@ function tryInitMap () {
 }
 
 function moveToAndZoom (position, zoom) {
-  if (zoom != null && zoom != map.getZoom()) {
-    map.setZoom(zoom)
-  }
   if (position != null) {
     map.panTo({
       lat: Number(position.latitude),
       lng: Number(position.longitude)
     })
+  }
+  if (zoom != null && zoom != map.getZoom()) {
+    map.setZoom(zoom)
   }
 }
 
@@ -60,27 +59,45 @@ function toInitPosZm() {
 }
 
 function setEarthquake(_eq) {
-  clearInterval(animSubCircleInterval);
+
+  if (eqCircle != null)
+    eqCircle.setMap(null);
+  eqCircle = null;
 
   subCircles.forEach(function(subCircle) {
     subCircle.setMap(null);
   })
   subCircles = [];
 
-  subAnimCircles.forEach(function(subCircle) {
-    subCircle.setMap(null);
-  })
-  subAnimCircles = [];
-
-  if (eqCircle != null)
-    eqCircle.setMap(null);
-  eqCircle = null;
-
-
   earthquake = _eq;
-  eq_level = earthquake.eq_level;
-  eq_color = ['#25AD4E', '#527CE9', '#FF5925'][eq_level]
-  eq_dist = [25, 50, 100][eq_level]
+
+  if (earthquake == null) return;
+  var eq = earthquake;
+
+  if (eq.eq_type == 'inland') {
+    if (eq.eq_strength >= 3.5 & eq.eq_strength < 4) {
+      eq_level = 0;
+      eq_dist = 25;
+      eq_color = '#25AD4E'
+    } else if (eq.eq_strength >= 4 && eq.eq_strength < 5) {
+      eq_dist = 50;
+      eq_color = '#527CE9'
+    } else if (eq.eq_strength >= 5) {
+      eq_dist = 100;
+      eq_color = '#FF5925'
+    }
+  } else if (eq.eq_type == 'waters') {
+    if (eq.eq_strength >= 4 & eq.eq_strength < 4.5) {
+      eq_dist = 25;
+      eq_color = '#25AD4E'
+    } else if (eq.eq_strength >= 4.5 && eq.eq_strength < 5.5) {
+      eq_dist = 50;
+      eq_color = '#527CE9'
+    } else if (eq.eq_strength >= 5.5) {
+      eq_dist = 100;
+      eq_color = '#FF5925'
+    }
+  }
 
   tryDrawEqCircle();
 }
@@ -101,7 +118,7 @@ function drawEqCircle () {
       strokeOpacity: 0.67,
       strokeWeight: 3,
       fillColor: eq_color,
-      fillOpacity: 0,
+      fillOpacity: 0.3,
       map: map,
       center: new naver.maps.LatLng(earthquake.latitude, earthquake.longitude),
       radius: eq_dist * 1000
@@ -110,7 +127,7 @@ function drawEqCircle () {
     for (var i = 1; i < eq_dist / 5; i++) {
       var subCircle = new naver.maps.Circle({
         strokeColor: eq_color,
-        strokeOpacity: 0.75,
+        strokeOpacity: 0.67,
         strokeWeight: 1,
         fillColor: eq_color,
         fillOpacity: 0,
@@ -121,48 +138,6 @@ function drawEqCircle () {
       subCircles.push(subCircle);
     }
 
-    startDrawSubCircleAnim()
-    // drawSubCircle();
     clearInterval(drawEqCircleInterval);
   }
-}
-
-var animOffset = 0;
-var animRepeat = 0;
-var animSubCircleInterval;
-function startDrawSubCircleAnim () {
-  animOffset = 0;
-  animRepeat = 0;
-  animSubCircleInterval = setInterval(drawSubCircle, 10);
-}
-
-
-function drawSubCircle () {
-  subAnimCircles.forEach(function(subCircle) {
-    subCircle.setMap(null);
-  })
-  subAnimCircles = [];
-
-  for (var i = 1; i < 4; i++) {
-    var animRad = i * (eq_dist / 4.0) * 1000 + (animOffset * 100);
-    var subCircle = new naver.maps.Circle({
-      strokeColor: eq_color,
-      strokeOpacity: 0,
-      strokeWeight: 1,
-      fillColor: eq_color,
-      fillOpacity: 0.2,
-      map: map,
-      center: new naver.maps.LatLng(earthquake.latitude, earthquake.longitude),
-      radius: animRad 
-    });
-    subAnimCircles.push(subCircle);
-    if (animRad > eq_dist * 1000) {
-      animOffset = 0;
-      animRepeat += 1;
-      if (eq_level + animRepeat > 2) {
-        clearInterval(animSubCircleInterval);
-      }
-    }
-  }
-  animOffset += 1;
 }

@@ -28,8 +28,7 @@
             <img src="../../assets/img/mark_green.png"/>
           </td>
           <td>
-            <h1>자체대응</h1>
-            점검반: 4조 이하
+            <span :class="eqLevel == 0 ? 'on' : ''">자체대응</span>
             
           </td>
         </tr>
@@ -38,8 +37,7 @@
             <img src="../../assets/img/mark_blue.png"/>
           </td>
           <td>
-            <h1>대응 1단계</h1>
-            점검반: 6조 이하
+            <span :class="eqLevel == 1 ? 'on' : ''">대응 1단계</span>
           </td>
         </tr>
         <tr>
@@ -47,8 +45,7 @@
             <img src="../../assets/img/mark_red.png"/>
           </td>
           <td>
-            <h1>대응 2단계</h1>
-            점검반: 8조 이하
+            <span :class="eqLevel == 2 ? 'on' : ''">대응 2단계</span>
           </td>
         </tr>
       </table>
@@ -57,6 +54,25 @@
         <i class="fas fa-compass"></i> 초기 위치로
       </div>
 
+      <div v-if="activeEq != null" id="strOnTeams"
+        :style="{height: `${sizes.winH - sizes.topbarH}px`}">
+        <div>
+          <div class="item" 
+            v-if="structures != null" v-for="(objKey, idx) in Object.keys(strOnTeam)" :key="idx">
+            <div class="team">
+              {{objKey}}조
+            </div>
+            <div class="strs">
+              <span v-for="(str, idx) in strOnTeam[objKey]" :key="idx" 
+                @click="seeStructure(str)">
+                {{str.str_name}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
     </div>
   </div>
 </template>
@@ -64,14 +80,37 @@
 <script>
 export default {
   name: 'naver-map',
-  props: ['sizes'],
+  props: ['sizes', 'activeEq', 'structures'],
   data () {
     return {
+    }
+  },
+  computed: {
+    eqLevel() {
+      if (this.activeEq == null) {
+        return -1
+      } else {
+        return this.activeEq.eq_level
+      }
+    },
+    strOnTeam() {
+      var result = {}
+      for (var i = 1; i < 9; i++) {
+        result[i] = []
+      }
+      this.structures.map((structure) => {
+        if (structure.on_team > 0)
+          result[structure.on_team].push(structure)
+      })
+      return result
     }
   },
   methods: {
     toInitPosZm () {
       window.toInitPosZm()
+    },
+    seeStructure (structure) {
+      window.moveToAndZoom(structure, 16)
     }
   },
   mounted () {
