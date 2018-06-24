@@ -78,9 +78,11 @@ function setEarthquake(_eq) {
 
 
   earthquake = _eq;
-  eq_level = earthquake.eq_level;
-  eq_color = ['#25AD4E', '#527CE9', '#FF5925'][eq_level]
-  eq_dist = [25, 50, 100][eq_level]
+  if (earthquake != null) {
+    eq_level = earthquake.eq_level;
+    eq_color = ['#25AD4E', '#527CE9', '#FF5925'][eq_level]
+    eq_dist = [25, 50, 100][eq_level]
+  }
 
   tryDrawEqCircle();
 }
@@ -94,7 +96,7 @@ function tryDrawEqCircle() {
   }
 }
 function drawEqCircle () {
-  if (mapReady) {
+  if (mapReady && earthquake != null) {
 
     eqCircle = new naver.maps.Circle({
       strokeColor: eq_color,

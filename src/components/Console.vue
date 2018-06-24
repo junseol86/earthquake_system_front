@@ -283,7 +283,7 @@ export default {
     window.getSpots = this.getSpots
 
     var jwtToken = this.$cookie.get('jwtToken')
-    if (jwtToken.length > 0) {
+    if (jwtToken != null && jwtToken.length > 0) {
       this.tokenLogin(jwtToken)
     }
   }
