@@ -15,17 +15,17 @@
             </td>
             <td :class="to == 'team' ? 'on' : ''">
               <div>
-                <select @click="setTo('team')">
-                  <option v-for="(team, idx) in teams" :key="idx">
-                    ▶︎ {{team}}조 
+                <select v-model="toTeam" @click="setTo('team')">
+                  <option v-for="(team, idx) in teams" :key="idx" :value="team.no">
+                    ▶︎ {{team.no == 0 ? '미편성' : `${team.no}조`}} 
                   </option>
                 </select>
               </div>
             </td>
             <td :class="to == 'member' ? 'on' : ''">
               <div>
-                <select @click="setTo('member')">
-                  <option v-for="(member, idx) in members" :key="idx">
+                <select v-model="toMember" @click="setTo('member')">
+                  <option v-for="(member, idx) in members" :key="idx" :value="member.mbr_idx">
                     ▶︎ {{member.mbr_name}}
                   </option>
                 </select>
@@ -38,12 +38,12 @@
           :style="{
             height: `${chtSize.messageH}px`,
             }">
-          <textarea placeholder="메시지 입력 후 엔터"
+          <textarea placeholder="메시지 입력 후 엔터" v-model="textToSend"
           :style="{
             margin: `${chtSize.messageM}px`,
             width: `${sizes.panelW - sizes.scrollBarW - 2 * (chtSize.messageM)}px`,
             height: `${chtSize.messageH - 2 * (chtSize.messageM)}px`
-            }"/>
+            }" @keypress.enter="sendChat()"/>
         </div>
 
       </div>
@@ -53,22 +53,23 @@
           height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - chtSize.selectToH - chtSize.messageH - 1}px`
           }">
         <div>
-          <table v-for="(message, idx) in messages" :key="idx"
-            :class="message.msg_from_idx.length == 0 ? 'on' : ''">
+          <table v-for="(chat, idx) in chats" :key="idx"
+            :class="chat.cht_from_idx == 0 ? 'mine' : ''">
             <tr>
-              <td v-if="message.msg_from_idx.length == 0" class="fromTo">
-                <i class="fas fa-arrow-circle-right"></i> {{message.msg_to_name}}
+              <td v-if="chat.cht_from_idx == 0" class="fromTo">
+                <i class="fas fa-arrow-circle-right"></i>
+                {{chat.cht_to_name.length > 0 ? chat.cht_to_name : chat.cht_to_team > 0 ? chat.cht_to_team + '조' : '전원'}}
               </td>
               <td v-else class="fromTo">
-                <i class="fas fa-arrow-circle-left"></i>︎ {{message.msg_from_name}}
+                <i class="fas fa-arrow-circle-left"></i>︎ {{chat.cht_from_name}}
               </td>
               <td class="datetime">
-                {{message.msg_datetime}}
+                {{chat.cht_sent}}
               </td>
             </tr>
             <tr>
               <td colspan="2" class="content">
-                {{message.msg_content}}
+                {{chat.cht_text}}
               </td>
             </tr>
           </table>
@@ -81,11 +82,9 @@
 
 <script>
 
-import mock from '../../../../mock'
-
 export default {
   name: 'chatting',
-  props: ['sizes', 'status'],
+  props: ['sizes', 'status', 'teams'],
   data () {
     return {
       chtSize: {
@@ -94,20 +93,97 @@ export default {
         messageM: 8
       },
       to: 'all',
-      teams: [],
-      members: [],
-      messages: []
+      toTeam: 1,
+      toMember: null,
+      textToSend: '',
+      chats: [],
+      chatPool: [],
+      interval: null
+    }
+  },
+  computed: {
+    members () {
+      var members = []
+      this.teams.map((team) => {
+        members = members.concat(team.members)
+      })
+      members.sort((a, b) => {
+        return (a.mbr_name > b.mbr_name) ? 1 : -1
+        })
+      return members
+    },
+    memberToSend () {
+      var result = null
+      this.members.map((member) => {
+        if (member.mbr_idx == this.toMember) {
+          result = member
+        }
+      })
+      return result
+    },
+    chatTo () {
+      var result = null
+      switch (this.to) {
+        case 'all': result = 0; break
+        case 'team': result = -1; break
+        default: result = this.memberToSend.mbr_idx
+      }
+      return result
     }
   },
   methods: {
     setTo (which) {
       this.to = which
+    },
+    getChatsBefore () {
+      var _this = this
+      var before = _this.chats.length == 0 ? 0 : _this.chats[this.chats.length - 1].cht_idx
+      _this.$axios.get(_this.$serverApi + 'chat/getHqBefore/' + before)
+      .then((response) => {
+        _this.spots = response.data
+        this.chats = response.data
+      })
+    },
+    getChatsAfter () {
+    },
+    setGetChatIntergal () {
+      this.interval = setInterval(this.getChatsAfter, '1000')
+    },
+    sendChat () {
+      var _this = this
+      var toSend = {
+        jwtToken: _this.status.jwtToken,
+        cht_to: _this.chatTo,
+        cht_to_team: _this.to == 'team' ? this.toTeam : '-1',
+        cht_to_name: _this.to == 'member' ? this.memberToSend.mbr_name : '',
+        cht_text: _this.textToSend
+      }
+      _this.$axios.post(_this.$serverApi + 'chat/insertHq', _this.$qs.stringify(toSend), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then((response) => {
+        _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+        if (!response.data.success) {
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+        } else {
+          _this.textToSend = ''
+          console.log(response.data)
+        }
+      }).catch((err) => {
+        console.log(err)
+        window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+      })
+
     }
   },
   mounted () {
-    this.teams = mock.teams
-    this.members = mock.memberNamesSorted()
-    this.messages = mock.chats()
+    this.toTeam = this.teams[1].no
+    this.toMember = this.members[0].mbr_idx
+
+    this.getChatsBefore()
+    this.setGetChatIntergal()
+  },
+  beforeDestroy () {
+    clearInterval(this.interval)
   }
 }
 </script>

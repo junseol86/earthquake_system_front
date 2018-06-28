@@ -35,11 +35,21 @@
             :status="status"
             :earthquakes="earthquakes"
             />
-          <team v-if="tab.current == 'team'" :sizes="sizes" :status="status"
-            :teams="teams"/>
-          <chatting v-if="tab.current == 'chatting'" :sizes="sizes" :status="status"/>
-          <structure v-if="tab.current == 'structure'" :sizes="sizes" :status="status"
-            :structures="structures"/>
+          <team v-if="tab.current == 'team'" 
+            :sizes="sizes" 
+            :status="status"
+            :teams="teams"
+            />
+          <chatting v-if="tab.current == 'chatting'" 
+            :sizes="sizes" 
+            :status="status"
+            :teams="teams"
+            />
+          <structure v-if="tab.current == 'structure'" 
+            :sizes="sizes" 
+            :status="status"
+            :structures="structures"
+            />
         </div>
       </div>
     </div>
