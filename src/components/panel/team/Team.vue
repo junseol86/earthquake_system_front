@@ -129,6 +129,7 @@ export default {
     }
   },
   mounted () {
+    clearTimeout(window.getChatsAfterTimeout)
   }
 }
 </script>

@@ -97,8 +97,10 @@ export default {
       toMember: null,
       textToSend: '',
       chats: [],
-      chatPool: [],
-      interval: null
+      pool: {
+        down: [],
+        toAdd: []
+      }
     }
   },
   computed: {
@@ -140,14 +142,33 @@ export default {
       var before = _this.chats.length == 0 ? 0 : _this.chats[this.chats.length - 1].cht_idx
       _this.$axios.get(_this.$serverApi + 'chat/getHqBefore/' + before)
       .then((response) => {
-        _this.spots = response.data
-        this.chats = response.data
+        _this.chats = response.data
+        window.getChatsAfterTimeout = setTimeout(this.getChatsAfter, '3000')
       })
     },
     getChatsAfter () {
-    },
-    setGetChatIntergal () {
-      this.interval = setInterval(this.getChatsAfter, '1000')
+      if (this.chats.length == 0) {
+        return
+      }
+      var _this = this
+      var after = _this.chats[0].cht_idx
+      _this.$axios.get(_this.$serverApi + 'chat/getHqAfter/' + after)
+      .then((response) => {
+        if (response.data.length > 0) {
+          _this.pool.down = response.data
+          for (var i = _this.pool.down.length - 1; i >= 0; i--) {
+            if (_this.pool.down[i].cht_idx > _this.chats[0].cht_idx) {
+              _this.pool.toAdd = [_this.pool.down[i]].concat(_this.pool.toAdd)
+            }
+          }
+          if (_this.pool.toAdd.length > 0) {
+            this.chats = _this.pool.toAdd.concat(this.chats)
+          }
+        }
+        window.getChatsAfterTimeout = setTimeout(this.getChatsAfter, '3000')
+
+      })
+
     },
     sendChat () {
       var _this = this
@@ -167,6 +188,9 @@ export default {
         } else {
           _this.textToSend = ''
           console.log(response.data)
+
+          clearTimeout(window.getChatsAfterTimeout)
+          _this.getChatsAfter()
         }
       }).catch((err) => {
         console.log(err)
@@ -180,10 +204,10 @@ export default {
     this.toMember = this.members[0].mbr_idx
 
     this.getChatsBefore()
-    this.setGetChatIntergal()
+    this.getChatsAfter()
   },
   beforeDestroy () {
-    clearInterval(this.interval)
+    clearTimeout(window.getChatsAfterTimeout)
   }
 }
 </script>
