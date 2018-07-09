@@ -50,9 +50,9 @@
 
       <div id="chats"
         :style="{
-          height: `${sizes.winH - sizes.topbarH - sizes.panelTopH - chtSize.selectToH - chtSize.messageH - 1}px`
-          }">
-        <div>
+          height: `${chatsH}px`
+          }" @scroll="onScroll">
+        <div ref="scrolled">
           <table v-for="(chat, idx) in chats" :key="idx"
             :class="chat.cht_from_idx == 0 ? 'mine' : ''">
             <tr>
@@ -61,7 +61,7 @@
                 {{chat.cht_to_name.length > 0 ? chat.cht_to_name : chat.cht_to_team > 0 ? chat.cht_to_team + '조' : '전원'}}
               </td>
               <td v-else class="fromTo">
-                <i class="fas fa-arrow-circle-left"></i>︎ {{chat.cht_from_name}}
+                <i class="fas fa-arrow-circle-left"></i>︎ {{chat.cht_from_name}} → {{chat.cht_to == 0 ? '전체' : '상황실'}}
               </td>
               <td class="datetime">
                 {{chat.cht_sent}}
@@ -100,10 +100,14 @@ export default {
       pool: {
         down: [],
         toAdd: []
-      }
+      },
+      getChatsBeforeLocked: false
     }
   },
   computed: {
+    chatsH () {
+      return this.sizes.winH - this.sizes.topbarH - this.sizes.panelTopH - this.chtSize.selectToH - this.chtSize.messageH - 1
+    },
     members () {
       var members = []
       this.teams.map((team) => {
@@ -137,13 +141,23 @@ export default {
     setTo (which) {
       this.to = which
     },
+    onScroll (e) {
+      if (!this.getChatsBeforeLocked && Number(e.srcElement.scrollTop) + Number(this.chatsH) + 100 > Number(this.$refs.scrolled.clientHeight)) {
+        this.getChatsBeforeLocked = true
+        this.getChatsBefore()
+      }
+    },
     getChatsBefore () {
       var _this = this
-      var before = _this.chats.length == 0 ? 0 : _this.chats[this.chats.length - 1].cht_idx
+      var isFirst = _this.chats.length == 0
+      var before = isFirst ? 0 : _this.chats[this.chats.length - 1].cht_idx
       _this.$axios.get(_this.$serverApi + 'chat/getHqBefore/' + before)
       .then((response) => {
-        _this.chats = response.data
-        window.getChatsAfterTimeout = setTimeout(this.getChatsAfter, '3000')
+        _this.chats = _this.chats.concat(response.data)
+        _this.getChatsBeforeLocked = false
+        if (isFirst) {
+          window.getChatsAfterTimeout = setTimeout(this.getChatsAfter, '3000')
+        }
       })
     },
     getChatsAfter () {
@@ -155,6 +169,7 @@ export default {
       _this.$axios.get(_this.$serverApi + 'chat/getHqAfter/' + after)
       .then((response) => {
         if (response.data.length > 0) {
+          _this.pool.toAdd = []
           _this.pool.down = response.data
           for (var i = _this.pool.down.length - 1; i >= 0; i--) {
             if (_this.pool.down[i].cht_idx > _this.chats[0].cht_idx) {
