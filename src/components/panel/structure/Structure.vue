@@ -17,6 +17,9 @@
           <input type="text" 
             placeholder="구조물명" v-model="strInsert.name"
             @keyup.enter="structureInsert()"/>
+          <input class="short" type="text" 
+            placeholder="순서" v-model="strInsert.order"
+            @keyup.enter="structureInsert()"/>
           <div id="space"/>
           <input class="long" type="text" 
             placeholder="위도" v-model="strInsert.lat"
@@ -77,6 +80,9 @@
                       <input 
                         v-model="structure.str_name"
                         placeholder="구조물명"/>
+                      <input class="tiny"
+                        v-model="structure.str_order"
+                        placeholder="순서"/>
 
                     </td>
                     <td class="buttons">
@@ -132,6 +138,7 @@ export default {
         branch: '',
         line: '',
         name: '',
+        order: '',
         lat: '',
         lng: ''
       },
@@ -148,6 +155,7 @@ export default {
       if (_this.strInsert.branch.length == 0 ||
         _this.strInsert.line.length == 0 ||
         _this.strInsert.name.length == 0 ||
+        _this.strInsert.order.length == 0 ||
         _this.strInsert.lat.length == 0 ||
         _this.strInsert.lng.length== 0) {
         alert('모든 항목을 입력해주세요.')
@@ -162,12 +170,12 @@ export default {
         if (!response.data.success) {
           window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
         } else {
-          _this.$bus.$emit('setStructures')
-          _this.$bus.$emit('addStructure', response.data.structure)
+          _this.$bus.$emit('getStructures')
           _this.strInsert = {
             branch: '',
             line: '',
             name: '',
+            order: '',
             lat: '',
             lng: ''
           }

@@ -132,7 +132,7 @@
             font-size: 0.9em;
           }
           input {
-            width: 100px;
+            width: 72px;
             vertical-align: top;
             height: 20px;
             line-height: 20px;
@@ -143,10 +143,13 @@
             padding: 4px;
             font-size: 0.9em;
             &.short {
-              width: 60px;
+              width: 48px;
             }
             &.long {
               width: 164px;
+            }
+            &.tiny {
+              width: 32px;
             }
           }
           #space {

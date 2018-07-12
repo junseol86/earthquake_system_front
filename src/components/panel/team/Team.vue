@@ -8,7 +8,7 @@
         :style="{
           height: `${tmSize.noticeBtnH}px`,
           lineHeight: `${tmSize.noticeBtnH}px`
-        }">
+        }" @click="notifyTeamChange()">
         <i class="fas fa-bell"></i> 조편성 알림 보내기
       </div>
       <div id="teams"
@@ -101,6 +101,21 @@ export default {
           window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
         })
       }
+    },
+    notifyTeamChange() {
+      var _this = this
+      var toSend = {
+        jwtToken: _this.status.jwtToken
+      }
+      _this.$axios.post(this.$serverApi + 'member/notifyTeam', this.$qs.stringify(toSend), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((response) => {
+          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+          window.alert('알림을 전송했습니다.')
+      }).catch((err) => {
+          console.log(err)
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+      })
     },
     phoneNumber(phone) {
       window.alert('☎︎ ' + phone)

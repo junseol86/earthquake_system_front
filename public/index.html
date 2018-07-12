@@ -6,6 +6,22 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>eq-sys-front</title>
+
+    <script>
+      function isIE() {
+        ua = navigator.userAgent;
+        /* MSIE used to detect old browsers and Trident used to newer ones*/
+        var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+        return is_ie; 
+      }
+      function forExplorer () {
+        if (!isIE()) {
+          document.getElementById('forExplorer').style.display = 'none';
+        }
+      }
+
+    </script>
+
     <script src="js/map.js"></script>
     <script src="js/map_structure.js"></script>
     <script src="js/map_spot.js"></script>
@@ -14,19 +30,36 @@
     async defer></script> -->
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=M091CYFEwJIfJ0NTem9b&callback=getReadyToInit"></script>
     <link href="/web-fonts-with-css/css/fontawesome-all.css" rel="stylesheet">
+
+
     <style>
-    .infoWindow {
-      text-align: left;
-      padding: 8px;
-      line-height: 1.6em;
-    }
-    .infoWindow span {
-      font-size: 1.1em;
-      font-weight: bold;
-    }
+      #forExplorer {
+        display: block;
+        text-align: center;
+        line-height: 1.6em;
+        padding: 80px;
+        font-size: 1.1em;
+        font-family: "맑은고딕","Malgun Gothic"
+      }
+      .infoWindow {
+        text-align: left;
+        padding: 8px;
+        line-height: 1.6em;
+      }
+      .infoWindow span {
+        font-size: 1.1em;
+        font-weight: bold;
+      }
     </style>
   </head>
   <body>
+    <div id="forExplorer">
+      '경주 지진알림 시스템'은 인터넷 익스플로러에서는 작동하지 않습니다.<br>
+      크롬, 엣지, 파이어폭스 등의 브라우저를 사용해주세요. 
+    </div>
+    <script>
+      forExplorer();
+    </script>
     <noscript>
       <strong>We're sorry but eq-sys-front doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>

@@ -147,11 +147,6 @@ export default {
         window.setSpots(_this.spots)
       })
     },
-    addStructure (structure) {
-      structure.color = this.$util.setStructureColor(structure, this.activeEq)
-      this.structures = [structure].concat(this.structures)
-      window.addStructure(structure)
-    },
     getMembers () {
       var _this = this
       _this.$axios.get(this.$serverApi + 'member/getList')
@@ -270,11 +265,11 @@ export default {
     this.$bus.$on('getMembers', () => {
       this.getMembers()
     })
-    this.$bus.$on('addStructure', (structure) => {
-      this.addStructure(structure)
-    })
     this.$bus.$on('setStructures', () => {
       window.setStructures(this.structures)
+    })
+    this.$bus.$on('getStructures', () => {
+      this.getStructures()
     })
 
     this.getEarthquakes()
