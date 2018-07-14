@@ -68,20 +68,19 @@ import Panel from './panel/Panel'
 import NaverMap from './naver_map/NaverMap'
 
 import accountMxn from '../mixins/console/account'
+import earthquakeMxn from '../mixins/console/earthquake'
+import structureMxn from '../mixins/console/structure'
+import spotMxn from '../mixins/console/spot'
+import memberMxn from '../mixins/console/member'
 
 export default {
   name: 'console',
   components: {
     Panel, NaverMap
   },
-  mixins: [accountMxn],
+  mixins: [accountMxn, earthquakeMxn, structureMxn, spotMxn, memberMxn],
   data () {
     return {
-      structures: [],
-      spots: [],
-      earthquakes: [],
-      activeEq: null,
-      teams: [],
       sizes: {
         winW: 0,
         winH: 0,
@@ -101,95 +100,6 @@ export default {
       }
     },
 
-    logout () {
-      this.status.jwtToken = ''
-      this.$cookie.set('jwtToken', '')
-    },
-
-    getEarthquakes () {
-      this.$axios.get(this.$serverApi + 'earthquake/getList')
-      .then((response) => {
-        this.earthquakes = response.data
-
-        var thereIsActive = false
-        this.earthquakes.map((earthquake) => {
-          if (earthquake.eq_active == 1) {
-            this.activeEq = earthquake
-            thereIsActive = true
-          }
-        })
-        if (thereIsActive == false) {
-          this.activeEq = null
-        }
-        window.setEarthquake(this.activeEq)
-        this.getStructures()
-        this.getSpots()
-      })
-    },
-    getStructures () {
-      var _this = this
-      _this.$axios.get(_this.$serverApi + 'structure/getList')
-      .then((response) => {
-        _this.structures = response.data
-        window.setStructures(_this.structures)
-      })
-    },
-    getSpots () {
-      var _this = this
-      _this.$axios.get(_this.$serverApi + 'spot/getList')
-      .then((response) => {
-        _this.spots = response.data
-        window.setSpots(_this.spots)
-      })
-    },
-    getMembers () {
-      var _this = this
-      _this.$axios.get(this.$serverApi + 'member/getList')
-      .then((response) => {
-        var members = response.data
-        members.map((member) => {
-          member.hasPos = _this.isPosReported(member.mbr_pos_last_report)
-          member.arrival = _this.arriveInIfInDay(member.mbr_arr_last_report, member.mbr_arrive_in)
-        })
-        var teams = []
-        for (var i = 0; i <= 10; i++) {
-          teams.push({
-            no: i,
-            members: []
-          })
-        }
-        members.map((member) => {
-          teams[member.mbr_team].members.push(member)
-        })
-        this.teams = teams
-        this.showMembersOnMap(members)
-      })
-    },
-
-    // 하루 이내 보고되었을 시 도착 예상 시간
-    arriveInIfInDay (arr_last_report, arrive_in) {
-      if (this.$util.isInDay(arr_last_report)) {
-        return this.$util.willComeUntil(arrive_in)
-      } else {
-        return ''
-      }
-    },
-    isArrReported (arr_last_report) {
-      return this.$util.isInDay(arr_last_report)
-    },
-    isPosReported (pos_last_report) {
-      return this.$util.isInDay(pos_last_report)
-    },
-
-    showMembersOnMap (members) {
-      var reported = []
-      members.map(function(member) {
-        if (member.hasPos) {
-          reported.push(member)
-        }
-      })
-      window.setMembers(reported)
-    },
   },
   mounted () {
     this.setSizes()
@@ -197,24 +107,6 @@ export default {
     window.addEventListener('resize', function () {
       setSizes()
     })
-
-    this.$bus.$on('getEarthquakes', () => {
-      this.getEarthquakes()
-    })
-    this.$bus.$on('getMembers', () => {
-      this.getMembers()
-    })
-    this.$bus.$on('setStructures', () => {
-      window.setStructures(this.structures)
-    })
-    this.$bus.$on('getStructures', () => {
-      this.getStructures()
-    })
-
-    this.getEarthquakes()
-    this.getMembers()
-
-    window.getSpots = this.getSpots
 
   }
 }

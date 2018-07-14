@@ -59,7 +59,12 @@ var mixin = {
         console.log(err)
         _this.status.jwtToken = undefined
       })
-    }
+    },
+
+    logout () {
+      this.status.jwtToken = ''
+      this.$cookie.set('jwtToken', '')
+    },
 
   },
   mounted () {
