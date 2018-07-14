@@ -105,12 +105,14 @@
           }
 
           &:hover {
-            .deleteBtn, .sendAlarmBtn {
+            .deleteBtn {
               display: inline;
             }
           }
-          .deleteBtn, .sendAlarmBtn {
+          .deleteBtn {
             display: none;
+          }
+          .deleteBtn, .sendAlarmBtn {
             border: 1px solid #ccc;
             background-color: white;
             padding: 4px 6px;

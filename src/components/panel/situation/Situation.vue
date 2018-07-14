@@ -76,11 +76,11 @@
                   </span>
                 </td>
                 <td class="buttons">
-                  <span class="sendAlarmBtn">
-                    <i class="fas fa-bell"></i> 알람
-                  </span>
                   <span class="deleteBtn" @click.stop="earthquakeDelete(idx)">
                       <i class="fas fa-trash"></i> 삭제
+                  </span>
+                  <span v-if="earthquake.eq_active > 0" class="sendAlarmBtn" @click="sendEqNotification(earthquake)">
+                    <i class="fas fa-bell"></i> 알람
                   </span>
                 </td>
               </tr>
@@ -201,7 +201,27 @@ export default {
           window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
         })
       }
+    },
+
+    sendEqNotification (earthquake) {
+      var _this = this
+      var toSend = {
+        jwtToken: _this.status.jwtToken,
+        level: earthquake.eq_level,
+        strength: earthquake.eq_strength,
+        type: earthquake.eq_type
+      }
+      _this.$axios.post(this.$serverApi + 'earthquake/sendEqNotification', this.$qs.stringify(toSend), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+      }).then((response) => {
+          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+          window.alert('알림을 전송했습니다.')
+      }).catch((err) => {
+          console.log(err)
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+      })
     }
+
   },
   mounted () {
     clearTimeout(window.getChatsAfterTimeout)
