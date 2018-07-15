@@ -27,6 +27,7 @@ var mixin = {
         })
         this.teams = teams
         this.showMembersOnMap(members)
+        window.getMembersAfterTimeout = setTimeout(this.getMembers, '10000')
       })
     },
 
@@ -62,6 +63,9 @@ var mixin = {
     })
 
     this.getMembers()
+  },
+  beforeDestroy () {
+    clearTimeout(window.getMembersAfterTimeout)
   }
 }
 

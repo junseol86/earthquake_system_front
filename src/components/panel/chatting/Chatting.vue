@@ -217,7 +217,6 @@ export default {
   mounted () {
     this.toTeam = this.teams[1].no
     this.toMember = this.members[0].mbr_idx
-
     this.getChatsBefore()
     this.getChatsAfter()
   },
