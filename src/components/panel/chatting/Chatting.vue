@@ -64,7 +64,7 @@
                 <i class="fas fa-arrow-circle-left"></i>︎ {{chat.cht_from_name}} → {{chat.cht_to == 0 ? '전체' : '상황실'}}
               </td>
               <td class="datetime">
-                {{chat.cht_sent}}
+                {{chat.sentTime}}
               </td>
             </tr>
             <tr>
@@ -153,7 +153,12 @@ export default {
       var before = isFirst ? 0 : _this.chats[this.chats.length - 1].cht_idx
       _this.$axios.get(_this.$serverApi + 'chat/getHqBefore/' + before)
       .then((response) => {
-        _this.chats = _this.chats.concat(response.data)
+        var chatDown = response.data
+        chatDown.map((chat) => {
+          var dt = new Date(chat.cht_sent)
+          chat.sentTime = _this.$util.parseIso8601(dt) 
+        })
+        _this.chats = _this.chats.concat(chatDown)
         _this.getChatsBeforeLocked = false
         if (isFirst) {
           window.getChatsAfterTimeout = setTimeout(this.getChatsAfter, '3000')
@@ -171,6 +176,10 @@ export default {
         if (response.data.length > 0) {
           _this.pool.toAdd = []
           _this.pool.down = response.data
+          _this.pool.down.map((chat) => {
+            var dt = new Date(chat.cht_sent)
+            chat.sentTime = _this.$util.parseIso8601(dt) 
+          })
           for (var i = _this.pool.down.length - 1; i >= 0; i--) {
             if (_this.pool.down[i].cht_idx > _this.chats[0].cht_idx) {
               _this.pool.toAdd = [_this.pool.down[i]].concat(_this.pool.toAdd)

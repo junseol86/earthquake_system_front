@@ -7,9 +7,15 @@ var mixin = {
   },
   methods: {
     getEarthquakes () {
+      var _this = this
       this.$axios.get(this.$serverApi + 'earthquake/getList')
       .then((response) => {
-        this.earthquakes = response.data
+        var eqDown = response.data
+        eqDown.map((eq) => {
+          var dt = new Date(eq.eq_datetime)
+          eq.eq_kortime = _this.$util.parseIso8601(dt) 
+        })
+        this.earthquakes = eqDown 
 
         var thereIsActive = false
         this.earthquakes.map((earthquake) => {
@@ -24,6 +30,7 @@ var mixin = {
         window.setEarthquake(this.activeEq)
         this.getStructures()
         this.getSpots()
+        window.getEarthquakeAfterTimeout = setTimeout(this.getEarthquakes, '30000')
       })
     }
   },

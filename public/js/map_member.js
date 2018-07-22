@@ -27,7 +27,7 @@ function showMembers() {
     members.forEach(function(member) {
 
       var mkrImg = {
-        url: 'http://35.229.252.63:8080/static/images/member' + (member.arrival.length > 0 ? '_pos' : '') + '.png',
+        url: 'http://35.229.252.63:8080/static/images/member' + (member.arrival.length == 0 ? '' : (member.arrival == 'reject' ? '_reject' : '_pos')) + '.png',
         size: new naver.maps.Size(26, 41),
         origin: new naver.maps.Point(0, 0),
         anchor: new naver.maps.Point(13, 41)
@@ -36,7 +36,7 @@ function showMembers() {
       var contentString = '<div class="infoWindow">';
       contentString += '[' + (member.mbr_team == 0 ? '미편성' : (member.mbr_team + '조')) + '] ';
       contentString += member.mbr_name;
-      contentString += member.arrival;
+      contentString += member.arrival.replace('reject', '');
       contentString += '<br>';
       contentString += '☎︎ ' + member.mbr_phone;
       contentString += '</div>';

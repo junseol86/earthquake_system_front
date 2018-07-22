@@ -46,6 +46,10 @@
                 &:hover {
                 border: 1px solid #527CE9;
                 }
+                &.reject {
+                  color: tomato;
+                  font-weight: bold;
+                }
               }
               .name {
                 font-size: 0.8em;

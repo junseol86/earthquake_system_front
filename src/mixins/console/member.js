@@ -34,7 +34,7 @@ var mixin = {
     // 하루 이내 보고되었을 시 도착 예상 시간
     arriveInIfInDay (arr_last_report, arrive_in) {
       if (this.$util.isInDay(arr_last_report)) {
-        return this.$util.willComeUntil(arrive_in)
+        return arrive_in == '-1' ? 'reject' : this.$util.willComeUntil(arrive_in)
       } else {
         return ''
       }
@@ -63,9 +63,6 @@ var mixin = {
     })
 
     this.getMembers()
-  },
-  beforeDestroy () {
-    clearTimeout(window.getMembersAfterTimeout)
   }
 }
 

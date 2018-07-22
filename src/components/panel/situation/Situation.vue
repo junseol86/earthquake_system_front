@@ -70,9 +70,7 @@
                   </span>
                   |
                   <span>
-                    {{new Date(earthquake.eq_datetime)
-                    .toISOString().split('.')[0].replace('T', ' ')
-                    .substring(2, 16)}}
+                    {{earthquake.eq_kortime}}
                   </span>
                 </td>
                 <td class="buttons">

@@ -22,12 +22,12 @@
               <div v-for="(member, m_idx) in team.members" 
                 :key="m_idx"
                 :class="(member.hasPos ? 'hasPos ' : ' ')
-                   + (member.arrival.length > 0 ? 'hasArr' : '')"
+                   + (member.arrival.length == 0 ? '' : (member.arrival != 'reject' ? 'hasArr' : 'reject'))"
                 @click="seeMember(member)">
                 <span class="name">
                   <i v-if="member.hasPos" class="fas fa-map-marker"></i>
                   {{member.mbr_name}}
-                  {{member.arrival}}
+                  {{member.arrival.replace('reject', '응소불가')}}
                 </span>
                 <i class="fas fa-phone-square" @click.stop="phoneNumber(member.mbr_phone)"></i>
                 <select v-model="member.mbr_team" :value="member.mbr_team"

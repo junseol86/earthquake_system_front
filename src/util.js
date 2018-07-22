@@ -11,7 +11,13 @@ const funcs = {
   willComeUntil (arrive_in) {
     var now = new Date();
     var willComeUntil = new Date(now.getTime() + arrive_in * 60000);
-    return ` - ${willComeUntil.getHours()}:${willComeUntil.getMinutes()} 도착`
+    return ` - ${willComeUntil.getHours()}:${willComeUntil.getMinutes()} 도착`;
+  },
+  parseIso8601 (dt) {
+    var result = dt.getFullYear() + '/' + (dt.getMonth() + 1) + '/' + dt.getDate() + ' ' ;
+    result += dt.getHours() + ':' + dt.getMinutes() + ':' + dt.getSeconds();
+    return result;
+
   }
 }
 
