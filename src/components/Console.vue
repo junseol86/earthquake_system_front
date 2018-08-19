@@ -16,7 +16,8 @@
               height: `${sizes.topbarH}px`,
               lineHeight: `${sizes.topbarH}px`
             }">
-            경주지사 지진관리 시스템
+            <img src="../assets/img/app_logo.png"/>
+            한국도로공사 경주지사 지진관리 시스템
             <table v-if="status.jwtToken.length > 0">
               <tr>
                 <td>
@@ -67,11 +68,11 @@
 import Panel from './panel/Panel'
 import NaverMap from './naver_map/NaverMap'
 
-import accountMxn from '../mixins/console/account'
-import earthquakeMxn from '../mixins/console/earthquake'
-import structureMxn from '../mixins/console/structure'
-import spotMxn from '../mixins/console/spot'
-import memberMxn from '../mixins/console/member'
+import accountMxn from './Console_account'
+import earthquakeMxn from './Console_earthquake'
+import structureMxn from './Console_structure'
+import spotMxn from './Console_spot'
+import memberMxn from './Console_member'
 
 export default {
   name: 'console',

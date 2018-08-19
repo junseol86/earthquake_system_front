@@ -15,7 +15,7 @@
           padding: 0;
         }
         input {
-          width: 100px;
+          width: 120px;
           vertical-align: top;
           height: 26px;
           line-height: 26px;
@@ -27,7 +27,7 @@
             width: 60px;
           }
           &.long {
-            width: 136px;
+            width: 180px;
           }
         }
         #space {
@@ -90,7 +90,8 @@
       .structure {
         position: relative;
         text-align: left;
-        border-bottom: 1px solid #555;
+        padding: 6px 0;
+        border-bottom: 2px solid #aaa;
         cursor: pointer;
         background-color: #444;
         &:hover {
@@ -100,20 +101,27 @@
           }
         }
         .buttons {
+          display: none;
           position: absolute;
           right: 7px;
-          top: 7px;
-          display: none;
+          top: 9px;
           text-align: right;
           font-size: 0.9em;
+          &.spec {
+            top: 44px;
+            div {
+              width: 111px;
+            }
+          }
           div {
+            width: 52px;
+            text-align: center;
             display: inline-block;
             background-color: #333;
             border: 1px solid #222;
             margin-left: 1px;
             height: 28px;
             line-height: 28px;
-            padding: 0 8px;
             cursor: pointer;
             &:hover {
               background-color: #222;
@@ -132,7 +140,7 @@
             font-size: 0.9em;
           }
           input {
-            width: 72px;
+            width: 120px;
             vertical-align: top;
             height: 20px;
             line-height: 20px;
@@ -146,10 +154,14 @@
               width: 48px;
             }
             &.long {
-              width: 164px;
+              width: 144px;
             }
             &.tiny {
               width: 32px;
+            }
+            &.highlighted {
+              color: skyblue;
+              font-weight: bold;
             }
           }
           #space {
@@ -158,6 +170,66 @@
 
           table {
             width: 100%;
+          }
+        }
+
+        .report {
+          width: inherit;
+          .buttonCon {
+            width: 120px;
+
+            .button td {
+              text-align: center;
+              font-size: 0.9em;
+              border:  1px solid #333;
+              background-color: #444;
+              height: 28px;
+              line-height: 28px;
+              text-align: center;
+              color: #888;
+              cursor: pointer;
+              i {
+                color: #888;
+              }
+              &:hover {
+                background-color: #333;
+                &.alert {
+                  background-color: #444;
+                }
+                &.on {
+                  background-color: #ddd;
+                }
+              }
+              &.on {
+                background-color: white;
+                color: #333;
+                i {
+                  color: #333;
+                }
+              }
+            }
+
+          }
+          .text {
+            font-size: 0.9em;
+            line-height: 1.2em;
+            padding: 2px 8px 0 8px;
+            vertical-align: top;
+            color: yellow;
+            .date {
+              color: #888;
+            }
+          }
+
+        }
+
+        .specCon {
+          .spec {
+            width: 100%;
+            background-color: #444;
+            border: 1px solid #333;
+            color: white;
+            font-size: 1.1em;
           }
         }
 

@@ -58,9 +58,9 @@
               <tr>
                 <td>
                   <span v-if="earthquake.eq_active > 0" class="stat active"
-                    @click.stop="activeToggle(earthquake.eq_idx, 0)">진행</span>
+                    @click.stop="activeToggle(earthquake.eq_idx, 0)">종료</span>
                   <span v-else class="stat"
-                    @click.stop="activeToggle(earthquake.eq_idx, 1)">종료</span>
+                    @click.stop="activeToggle(earthquake.eq_idx, 1)">활성</span>
                   <span>
                     {{earthquake.eq_type.replace("inland", "내륙").replace("waters", "해역")}}
                   </span>

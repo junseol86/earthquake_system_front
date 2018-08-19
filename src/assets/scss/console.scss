@@ -8,9 +8,14 @@
         position: relative;
         background-color: #444;
         color: white;
-        padding: 0 16px;
+        padding: 0 8px;
         text-align: left;
         font-size: 1.2em;
+        img {
+          vertical-align: middle;
+          margin-right: 6px;
+          margin-bottom: 3px;
+        }
         table {
           position: absolute;
           top: 11px;

@@ -14,17 +14,17 @@
           <input class="short" type="text" 
             placeholder="노선" v-model="strInsert.line"
             @keyup.enter="structureInsert()"/>
-          <input type="text" 
+          <input class="long" type="text" 
             placeholder="구조물명" v-model="strInsert.name"
             @keyup.enter="structureInsert()"/>
+          <div id="space"/>
           <input class="short" type="text" 
             placeholder="순서" v-model="strInsert.order"
             @keyup.enter="structureInsert()"/>
-          <div id="space"/>
-          <input class="long" type="text" 
+          <input type="text" 
             placeholder="위도" v-model="strInsert.lat"
             @keyup.enter="structureInsert()"/>
-          <input class="long" type="text" 
+          <input type="text" 
             placeholder="경도" v-model="strInsert.lng"
             @keyup.enter="structureInsert()"/>
           <div class="button" @click="structureInsert()">
@@ -70,30 +70,23 @@
                 <table>
                   <tr>
                     <td>
-
                       <input class="short" 
                         v-model="structure.str_branch"
                         placeholder="지사"/>
                       <input class="short" 
                         v-model="structure.str_line"
                         placeholder="노선"/>
-                      <input 
+                      <input class="highlighted"
                         v-model="structure.str_name"
                         placeholder="구조물명"/>
-                      <input class="tiny"
-                        v-model="structure.str_order"
-                        placeholder="순서"/>
-
                     </td>
                     <td class="buttons">
-
                       <div @click.stop="structureModify(idx)">
-                        <i class="fas fa-upload"></i> 수정
+                        <i class="fas fa-upload"></i> 저장
                       </div>
                       <div @click.stop="structureDelete(idx)">
                         <i class="fas fa-trash"></i> 삭제
                       </div>
-
                     </td>
                   </tr>
                 </table>
@@ -101,19 +94,59 @@
               </div>
               <div id="space"/>
               <div>
-                <input class="long" 
-                  v-model="structure.latitude"/>
-                <input class="long" 
-                  v-model="structure.longitude"/>
+                <table>
+                  <tr>
+                    <td>
+                      <input class="tiny"
+                          v-model="structure.str_order"
+                          placeholder="순서"/>
+                      <input class="long"
+                        v-model="structure.latitude"/>
+                      <input class="long"
+                        v-model="structure.longitude"/>
+                    </td>
+                  </tr>
+                </table>
               </div>
-            </div>
-            <div v-if="structure.selected">
-              <div class="button">
-                수정
+              <div id="space"/>
+
+              <div class="specCon">
+                <textarea class="spec" v-model="structure.str_spec" placeholder="제원">
+                </textarea>
               </div>
-              <div class="button">
-                삭제
+
+              <div id="space"/>
+              <div>
+                <table class="report">
+                  <tr>
+                    <td class="buttonCon">
+
+                      <table class="button">
+                        <tr>
+                          <td :class="(structure.str_rpt_prior > 0 ? 'on' : '')" @click.stop="priorityToggle(idx)">
+                            우선
+                          </td>
+                          <td :class="(structure.str_need_check > 0 ? 'on' : '')" @click.stop="needCheckToggle(idx)">
+                            점검 
+                          </td>
+                          <td :class="'alert ' + (structure.str_need_check > 0 ? 'on' : '')" @click.stop="requestReport(idx)">
+                            <i class="fas fa-bell"></i>
+                          </td>
+                        </tr>
+                      </table>
+
+                    </td>
+
+                    <td class="text">
+                      {{structure.str_report}}
+                      <span class="date">
+                        {{parseTime(structure.str_last_reported)}}
+                      </span>
+                    </td>
+                  </tr>
+                </table>
               </div>
+
             </div>
           </div>
         </div>
@@ -125,9 +158,12 @@
 
 <script>
 
+import asyncMxn from './Structure_async'
+
 export default {
   name: 'structure',
   props: ['sizes', 'status', 'structures'],
+  mixins: [asyncMxn],
   data () {
     return {
       strSize: {
@@ -149,99 +185,9 @@ export default {
     seeStructure (structure) {
       window.moveToAndZoom(structure, 16)
     },
-
-    structureInsert () {
-      var _this = this
-      if (_this.strInsert.branch.length == 0 ||
-        _this.strInsert.line.length == 0 ||
-        _this.strInsert.name.length == 0 ||
-        _this.strInsert.order.length == 0 ||
-        _this.strInsert.lat.length == 0 ||
-        _this.strInsert.lng.length== 0) {
-        alert('모든 항목을 입력해주세요.')
-        return
-      }
-      var toSend = _this.strInsert
-      toSend.jwtToken = _this.status.jwtToken
-      _this.$axios.post(_this.$serverApi + 'structure/insert', _this.$qs.stringify(toSend), {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }).then((response) => {
-        _this.$bus.$emit('setJwtToken', response.data.jwtToken)
-        if (!response.data.success) {
-          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-        } else {
-          _this.$bus.$emit('getStructures')
-          _this.strInsert = {
-            branch: '',
-            line: '',
-            name: '',
-            order: '',
-            lat: '',
-            lng: ''
-          }
-        }
-      }).catch((err) => {
-        console.log(err)
-        window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-      })
+    parseTime (dt) {
+      return dt != null && dt.length > 0 ?  this.$util.parseIso8601(new Date(dt)) : ''
     },
-
-    structureModify (idx) {
-      var _this = this
-      var structure = _this.structures[idx]
-      if (structure.str_branch.length == 0 ||
-        structure.str_line.length == 0 ||
-        structure.str_name.length == 0 ||
-        structure.latitude.length == 0 ||
-        structure.longitude.length == 0) {
-        alert('모든 항목을 입력해주세요.')
-        return
-      }
-      var toSend = structure
-      toSend.jwtToken = _this.status.jwtToken
-      _this.$axios.put(_this.$serverApi + 'structure/modify', _this.$qs.stringify(toSend), {
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-      }).then((response) => {
-        _this.$bus.$emit('setJwtToken', response.data.jwtToken)
-        if (!response.data.success) {
-          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-        } else {
-          window.alert('수정되었습니다.')
-          _this.structures[idx] = response.data.structure
-          _this.$bus.$emit('setStructures')
-        }
-      }).catch((err) => {
-        console.log(err)
-        window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-      })
-
-    },
-
-    structureDelete (idx) {
-      if (window.confirm('이 구조물을 삭제하시겠습니까?')) {
-        var _this = this
-        var toSend = {
-          str_idx: _this.structures[idx].str_idx,
-          jwtToken: _this.status.jwtToken
-        }
-        _this.$axios.post(this.$serverApi + 'structure/delete', this.$qs.stringify(toSend), {
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        }).then((response) => {
-          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
-          if (!response.data.success) {
-            window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-          } else {
-            window.alert('삭제되었습니다.')
-            _this.structures.splice(idx, 1)
-            _this.$bus.$emit('setStructures')
-          }
-        }).catch((err) => {
-          console.log(err)
-          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
-        })
-      }
-
-    }
 
   },
   mounted () {

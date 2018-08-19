@@ -7,6 +7,7 @@ var mixin = {
   },
   methods: {
     getEarthquakes () {
+      window.clearTimeout(window.getEarthquakeAfterTimeout)
       var _this = this
       this.$axios.get(this.$serverApi + 'earthquake/getList')
       .then((response) => {
@@ -30,7 +31,7 @@ var mixin = {
         window.setEarthquake(this.activeEq)
         this.getStructures()
         this.getSpots()
-        window.getEarthquakeAfterTimeout = setTimeout(this.getEarthquakes, '30000')
+        window.getEarthquakeAfterTimeout = setTimeout(this.getEarthquakes, '20000')
       })
     }
   },

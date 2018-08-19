@@ -75,7 +75,7 @@ export default {
         list: [
           ['situation', '상황', 'fa-globe'],
           ['team', '조편성', 'fa-user-friends'],
-          ['chatting', '통신', 'fa-comments'],
+          ['chatting', '채팅', 'fa-comments'],
           ['structure', '구조물', 'fa-building']
         ],
         current: 'situation'

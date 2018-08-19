@@ -7,6 +7,7 @@ var mixin = {
   methods: {
 
     getMembers () {
+      window.clearTimeout(window.getMembersAfterTimeout)
       var _this = this
       _this.$axios.get(this.$serverApi + 'member/getList')
       .then((response) => {

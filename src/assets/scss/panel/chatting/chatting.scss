@@ -64,14 +64,20 @@
         &:nth-child(even) {
           background-color: #eeeeee;
         }
+        // &.mine {
+        //     color: white;
+        //     background-color: #5289E9;
+        //     &:nth-child(even) {
+        //       background-color: #527CE9;
+        //     }
+        //     td.fromTo i {
+        //       color: white;
+        //     }
+        //   }
         &.mine {
-            color: white;
-            background-color: #5289E9;
+            background-color: rgba(82, 137, 233, 0.25);
             &:nth-child(even) {
-              background-color: #527CE9;
-            }
-            td.fromTo i {
-              color: white;
+              background-color: rgba(82, 137, 233, 0.3);
             }
           }
         width: 100%;
