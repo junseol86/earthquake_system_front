@@ -137,11 +137,13 @@
 
                     </td>
 
-                    <td class="text">
+                    <td :class="'text ' + (structure.str_last_reported != null && new Date() - Date.parse(structure.str_last_reported) < 60 * 60 * 24 * 1000 ? 'on' : '')">
                       {{structure.str_report}}
                       <span class="date">
                         {{parseTime(structure.str_last_reported)}}
                       </span>
+                      <i v-if="structure.str_report != null && structure.str_report.trim().length > 0" 
+                        class="fas fa-times-circle" @click="clearReport(idx)"></i>
                     </td>
                   </tr>
                 </table>

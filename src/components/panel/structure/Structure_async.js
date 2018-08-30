@@ -96,6 +96,32 @@ var mixin = {
 
     },
 
+    clearReport (idx) {
+      var _this = this
+      var structure = _this.structures[idx]
+      if (window.confirm('이 보고를 지우시겠습니까?')) {
+        var toSend = {
+          str_idx: structure.str_idx,
+          str_report: '',
+          jwtToken: _this.status.jwtToken
+        }
+        toSend.jwtToken = _this.status.jwtToken
+        _this.$axios.put(_this.$serverApi + 'structure/report', _this.$qs.stringify(toSend), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then((response) => {
+          _this.$bus.$emit('setJwtToken', response.data.jwtToken)
+          if (!response.data.success) {
+            window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+          } else {
+            _this.structures[idx].str_report = ''
+          }
+        }).catch((err) => {
+          console.log(err)
+          window.alert('오류가 발생했습니다.  다시 시도해 주세요.')
+        })
+      }
+    },
+
     structureDelete (idx) {
       if (window.confirm('이 구조물을 삭제하시겠습니까?')) {
         var _this = this

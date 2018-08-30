@@ -215,9 +215,19 @@
             line-height: 1.2em;
             padding: 2px 8px 0 8px;
             vertical-align: top;
-            color: yellow;
+            color: #888;
+            &.on {
+              color: yellow;
+            }
             .date {
               color: #888;
+            }
+            i {
+              margin-left: 2px;
+              opacity: 0.3;
+              &:hover {
+                opacity: 1;
+              }
             }
           }
 
